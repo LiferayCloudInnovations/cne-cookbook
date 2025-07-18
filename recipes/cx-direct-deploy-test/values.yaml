@@ -24,8 +24,8 @@ customInitContainers:
           - |
             if [ -d /mnt/local/osgi/client-extensions/ ]
             then
-              mkdir -p /temp/osgi/client-extensions/
-              cp -fv /mnt/local/osgi/client-extensions/*.zip /temp/osgi/client-extensions/
+              mkdir -p /temp/liferay/deploy
+              cp -fv /mnt/local/osgi/client-extensions/*.zip /temp/liferay/deploy
             fi
           image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
           imagePullPolicy: {{ .image.pullPolicy }}
