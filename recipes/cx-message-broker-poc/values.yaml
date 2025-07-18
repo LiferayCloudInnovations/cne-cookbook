@@ -144,7 +144,7 @@ customInitContainers:
             fi
           image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
           imagePullPolicy: {{ .image.pullPolicy }}
-          name: liferay-deploy-modules
+          name: cx-message-broker-poc-init-container
           volumeMounts:
           - mountPath: /temp
             name: liferay-persistent-volume

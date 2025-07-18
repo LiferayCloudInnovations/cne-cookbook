@@ -7,6 +7,11 @@ DXP_IMAGE_TAG := 7.4.13-u132
 LOCAL_MOUNT := tmp/mnt/local
 
 ### RECIPES ###
+
+cx-direct-deploy-test: ## Test direct deploy cx
+	export RECIPE="recipes/cx-direct-deploy-test"
+	$(MAKE) recipe
+
 cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export RECIPE="recipes/cx-message-broker-poc"
 	$(MAKE) recipe
@@ -25,7 +30,7 @@ clean-local-mount: ## Clean local mount
 	@rm -rf "${PWD}/${LOCAL_MOUNT}/*"
 
 deploy-cx: switch-context ## Deploy Client extensions to cluster
-	@cd "${PWD}/${RECIPE}/workspace" && ./gradlew :client-extensions:helmDeploy -x test -x check
+	@cd "${PWD}/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
 
 deploy-dxp: switch-context license
 	@helm upgrade -i liferay \
@@ -38,6 +43,9 @@ deploy-dxp: switch-context license
 		--timeout 10m \
 		--wait
 
+deploy-workspace: clean-local-mount ## Deploy Liferay modules to local mount
+	@cd "${PWD}/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
+
 help:
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
@@ -47,10 +55,7 @@ license: ## Extract license.xml from DXP image
 mkdir-local-mount: ## Create k3d local mount folder
 	@mkdir -p "${PWD}/${LOCAL_MOUNT}"
 
-modules: ## Deploy Liferay modules to local mount
-	@cd "${PWD}/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" :modules:deploy -x test -x check
-
-recipe: start-cluster clean-local-mount modules deploy-dxp deploy-cx ## Make a recipe (can't be called directly without setting RECIPE var)
+recipe: start-cluster deploy-workspace deploy-dxp deploy-cx ## Make a recipe (can't be called directly without setting RECIPE var)
 
 patch-coredns: switch-context ## Patch CoreDNS to resolve hostnames
 	@./scripts/patch_coredns ${CLUSTER_NAME}
@@ -71,10 +76,12 @@ install-ksgate: create-cluster
 		--timeout 5m \
 		--wait
 
-start-cluster: create-cluster install-ksgate patch-coredns
+start-cluster: mkdir-local-mount create-cluster install-ksgate patch-coredns
 
 switch-context: ## Switch kubectl context to k3d cluster
 	@kubectx k3d-${CLUSTER_NAME}
+
+undeploy: undeploy-cx undeploy-dxp
 
 undeploy-cx: switch-context ## Clean up Client Extensions
 	@helm list -n liferay-system -q --filter "-cx" | xargs -r helm uninstall -n liferay-system
