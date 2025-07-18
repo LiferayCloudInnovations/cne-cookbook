@@ -30,7 +30,7 @@ clean-data: switch-context undeploy-dxp ## Clean up data in the cluster
 	@kubectl delete pvc --selector "app.kubernetes.io/name=liferay-default" -n liferay-system
 
 clean-local-mount: ## Clean local mount
-	@rm -rf "${PWD}/${LOCAL_MOUNT}/*"
+	@rm -rf "${PWD}/${LOCAL_MOUNT}"/*
 
 deploy: deploy-workspace deploy-cx deploy-dxp
 
