@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+## check if recipe var is set and throw error otherwise
+
+if [ -z "${RECIPE}" ]; then
+  echo "Error: RECIPE is not set. Please set it before running the script."
+  exit 1
+else
+  echo "RECIPE is set to '${RECIPE}'."
+fi

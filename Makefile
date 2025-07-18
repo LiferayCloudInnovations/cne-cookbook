@@ -18,6 +18,9 @@ cx-message-broker-poc: ## Client Extensions with Message Broker POC
 
 ### TARGETS ###
 
+check-recipe-var: ## Check if RECIPE variable is set, throw error otherwise
+	@./scripts/check_recipe_var
+
 clean: clean-cluster ## Clean up everything
 
 clean-cluster: ## Delete k3d cluster
@@ -29,10 +32,12 @@ clean-data: switch-context undeploy-dxp ## Clean up data in the cluster
 clean-local-mount: ## Clean local mount
 	@rm -rf "${PWD}/${LOCAL_MOUNT}/*"
 
-deploy-cx: switch-context ## Deploy Client extensions to cluster
+deploy: deploy-workspace deploy-cx deploy-dxp
+
+deploy-cx: check-recipe-var switch-context ## Deploy Client extensions to cluster
 	@cd "${PWD}/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
 
-deploy-dxp: switch-context license
+deploy-dxp: check-recipe-var switch-context license
 	@helm upgrade -i liferay \
 		oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
 		-f "${PWD}/${RECIPE}/values.yaml" \
@@ -43,7 +48,7 @@ deploy-dxp: switch-context license
 		--timeout 10m \
 		--wait
 
-deploy-workspace: clean-local-mount ## Deploy Liferay modules to local mount
+deploy-workspace: check-recipe-var clean-local-mount ## Deploy Liferay modules to local mount
 	@cd "${PWD}/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
 
 help:
