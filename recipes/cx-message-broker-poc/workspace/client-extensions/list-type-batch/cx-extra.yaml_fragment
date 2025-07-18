@@ -1,0 +1,7 @@
+  kind: Job
+  mountInitConfig: true
+env:
+  LIFERAY_BATCH_OAUTH_APP_ERC: list-type-batch-importer
+  LIFERAY_BATCH_CURL_OPTIONS: -v
+job:
+  backoffLimit: 30

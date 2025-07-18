@@ -1,0 +1,7 @@
+  kind: Deployment
+ingress:
+  enabled: true
+service:
+  enabled: true
+  port: 80
+
