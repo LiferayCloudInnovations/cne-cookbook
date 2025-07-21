@@ -37,7 +37,7 @@ deploy: deploy-workspace deploy-cx deploy-dxp
 deploy-cx: check-recipe-var switch-context ## Deploy Client extensions to cluster
 	@cd "${PWD}/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
 
-deploy-dxp: check-recipe-var switch-context license
+deploy-dxp: check-recipe-var deploy-workspace switch-context license
 	@helm upgrade -i liferay \
 		oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
 		-f "${PWD}/${RECIPE}/values.yaml" \
