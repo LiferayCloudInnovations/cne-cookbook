@@ -40,7 +40,7 @@ deploy-cx: check-recipe-var switch-context ## Deploy Client extensions to cluste
 deploy-dxp: check-recipe-var deploy-workspace switch-context license
 	@helm upgrade -i liferay \
 		oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
-		-f "${PWD}/recipe/${RECIPE}/values.yaml" \
+		-f "${PWD}/recipes/${RECIPE}/values.yaml" \
 		--create-namespace \
 		--namespace liferay-system \
 		--set "image.tag=${DXP_IMAGE_TAG}" \
@@ -49,7 +49,7 @@ deploy-dxp: check-recipe-var deploy-workspace switch-context license
 		--wait
 
 deploy-workspace: check-recipe-var clean-local-mount ## Deploy Liferay modules to local mount
-	@cd "${PWD}/recipe/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
+	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
 
 help:
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -89,9 +89,9 @@ switch-context: ## Switch kubectl context to k3d cluster
 undeploy: undeploy-cx undeploy-dxp
 
 undeploy-cx: switch-context ## Clean up Client Extensions
-	@helm list -n liferay-system -q --filter "-cx" | xargs -r helm uninstall -n liferay-system
+	@helm list -n liferay-system -q --filter "-cx" | xargs -r helm uninstall -n liferay-system --wait
 	@kubectl -n liferay-system delete cm --selector "lxc.liferay.com/metadataType=ext-init"
 
 undeploy-dxp: switch-context ## Clean up DXP deployment
-	@helm list -n liferay-system -q --filter "liferay" | xargs -r helm uninstall -n liferay-system
+	@helm list -n liferay-system -q --filter "liferay" | xargs -r helm uninstall -n liferay-system --wait
 	@kubectl -n liferay-system delete cm --selector "lxc.liferay.com/metadataType=dxp"
