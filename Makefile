@@ -9,11 +9,11 @@ LOCAL_MOUNT := tmp/mnt/local
 ### RECIPES ###
 
 cx-direct-deploy-test: ## Test direct deploy cx
-	export RECIPE="recipes/cx-direct-deploy-test"
+	export RECIPE="cx-direct-deploy-test"
 	$(MAKE) recipe
 
 cx-message-broker-poc: ## Client Extensions with Message Broker POC
-	export RECIPE="recipes/cx-message-broker-poc"
+	export RECIPE="cx-message-broker-poc"
 	$(MAKE) recipe
 
 ### TARGETS ###
@@ -35,12 +35,12 @@ clean-local-mount: ## Clean local mount
 deploy: deploy-workspace deploy-cx deploy-dxp
 
 deploy-cx: check-recipe-var switch-context ## Deploy Client extensions to cluster
-	@cd "${PWD}/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
+	@cd "${PWD}/recipes/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
 
 deploy-dxp: check-recipe-var deploy-workspace switch-context license
 	@helm upgrade -i liferay \
 		oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
-		-f "${PWD}/${RECIPE}/values.yaml" \
+		-f "${PWD}/recipe/${RECIPE}/values.yaml" \
 		--create-namespace \
 		--namespace liferay-system \
 		--set "image.tag=${DXP_IMAGE_TAG}" \
@@ -49,7 +49,7 @@ deploy-dxp: check-recipe-var deploy-workspace switch-context license
 		--wait
 
 deploy-workspace: check-recipe-var clean-local-mount ## Deploy Liferay modules to local mount
-	@cd "${PWD}/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
+	@cd "${PWD}/recipe/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
 
 help:
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
