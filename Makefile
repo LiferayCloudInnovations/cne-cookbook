@@ -19,7 +19,7 @@ cx-message-broker-poc: ## Client Extensions with Message Broker POC
 ### TARGETS ###
 
 check-recipe-var: ## Check if RECIPE variable is set, throw error otherwise
-	@./scripts/check_recipe_var
+	@./scripts/check_recipe_var.sh
 
 clean: clean-cluster ## Clean up everything
 
@@ -38,15 +38,7 @@ deploy-cx: check-recipe-var switch-context ## Deploy Client extensions to cluste
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
 
 deploy-dxp: check-recipe-var deploy-workspace switch-context license
-	@helm upgrade -i liferay \
-		oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
-		-f "${PWD}/recipes/${RECIPE}/values.yaml" \
-		--create-namespace \
-		--namespace liferay-system \
-		--set "image.tag=${DXP_IMAGE_TAG}" \
-		--set-file "configmap.data.license\.xml=license.xml" \
-		--timeout 10m \
-		--wait
+	@./scripts/deploy_dxp.sh ${RECIPE} ${DXP_IMAGE_TAG}
 
 deploy-workspace: check-recipe-var clean-local-mount ## Deploy Liferay modules to local mount
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
@@ -55,7 +47,7 @@ help:
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 license: ## Extract license.xml from DXP image
-	@./scripts/extract_license
+	@./scripts/extract_license.sh
 
 mkdir-local-mount: ## Create k3d local mount folder
 	@mkdir -p "${PWD}/${LOCAL_MOUNT}"
@@ -63,7 +55,7 @@ mkdir-local-mount: ## Create k3d local mount folder
 recipe: start-cluster deploy-workspace deploy-dxp deploy-cx ## Make a recipe (can't be called directly without setting RECIPE var)
 
 patch-coredns: switch-context ## Patch CoreDNS to resolve hostnames
-	@./scripts/patch_coredns ${CLUSTER_NAME}
+	@./scripts/patch_coredns.sh ${CLUSTER_NAME}
 	@kubectl rollout restart deployment coredns -n kube-system
 
 create-cluster: mkdir-local-mount ## Start k3d cluster

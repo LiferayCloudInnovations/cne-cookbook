@@ -1,0 +1,286 @@
+configmap:
+  data:
+    com.liferay.portal.trebuchet.configuration.MessageBrokerConfiguration.config: |
+      automaticRecoveryEnabled=b"true"
+      host="liferay-default-rabbitmq"
+      port=i"5672"
+      userName="$[env:RABBITMQ_CLIENT_USERNAME]"
+      password="$[env:RABBITMQ_CLIENT_PASSWORD]"
+    com.liferay.object.message.broker-log4j-ext.xml: |
+      <?xml version="1.0"?>
+      <Configuration strict="true">
+        <Loggers>
+          <Logger level="DEBUG" name="com.liferay.object.message.broker" />
+        </Loggers>
+      </Configuration>
+    com.liferay.portal.trebuchet.impl-log4j-ext.xml: |
+      <?xml version="1.0"?>
+      <Configuration strict="true">
+        <Loggers>
+          <Logger level="DEBUG" name="com.liferay.portal.trebuchet" />
+        </Loggers>
+      </Configuration>
+    rabbitmq.conf: |
+      ## Clustering
+      cluster_partition_handling = ignore
+
+      ## Networking
+      listeners.tcp.default = 5672
+
+      ## Management
+      management.tcp.ip = 0.0.0.0
+      management.tcp.port = 15672
+
+      ## Resource limits
+      # Set a free disk space limit relative to total available RAM
+      disk_free_limit.relative = 1.0
+    rabbitmq-definitions.json: |
+      {
+        "permissions": [
+          {
+            "configure": ".*",
+            "read": ".*",
+            "user": "lfrrabbitmq",
+            "vhost": "main.dxp.localtest.me",
+            "write": ".*"
+          },
+          {
+            "configure": ".*",
+            "read": ".*",
+            "user": "rabbitmq",
+            "vhost": "/",
+            "write": ".*"
+          }
+        ],
+        "bindings": [],
+        "queues": [],
+        "parameters": [],
+        "policies": [],
+        "rabbitmq_version": "4.1.1",
+        "rabbit_version": "4.1.1",
+        "exchanges": [],
+        "vhosts": [
+          {
+            "limits": [],
+            "metadata": {
+              "description": "",
+              "tags": [],
+              "default_queue_type": "classic"
+            },
+            "name": "main.dxp.localtest.me"
+          },
+          {
+            "limits": [],
+            "metadata": {
+              "description": "Default virtual host",
+              "tags": [],
+              "default_queue_type": "classic"
+            },
+            "name": "/"
+          }
+        ],
+        "users": [
+          {
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "limits": {},
+            "name": "lfrrabbitmq",
+            "password_hash": "CDbuMB9NfMCArTzqYA785kG4lgnQPXbEI380eLMivwF78gti",
+            "tags": ["management"]
+          },
+          {
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "limits": {},
+            "name": "rabbitmq",
+            "password_hash": "uwUMHfORJ/YGt+4wA9mZjUiWve+LXs1DMmCZYT/PRNSeMLfc",
+            "tags": ["administrator"]
+          }
+        ],
+        "global_parameters": [{ "name": "cluster_tags", "value": [] }],
+        "topic_permissions": []
+      }
+    RABBITMQ_CLIENT_USERNAME: lfrrabbitmq
+    RABBITMQ_CLIENT_PASSWORD: lfrrabbitmq
+customEnv:
+  x-rabbitmq:
+  - name: LIFERAY_DISABLE_TRIAL_LICENSE
+    value: "true"
+  - name: LIFERAY_JPDA_ENABLED
+    value: "true"
+  - name: RABBITMQ_CLIENT_USERNAME
+    valueFrom:
+      configMapKeyRef:
+        name: liferay-default
+        key: RABBITMQ_CLIENT_USERNAME
+  - name: RABBITMQ_CLIENT_PASSWORD
+    valueFrom:
+      configMapKeyRef:
+        name: liferay-default
+        key: RABBITMQ_CLIENT_PASSWORD
+customVolumeMounts:
+  x-rabbitmq:
+  - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.trebuchet.configuration.MessageBrokerConfiguration.config
+    name: liferay-configmap
+    subPath: com.liferay.portal.trebuchet.configuration.MessageBrokerConfiguration.config
+  - mountPath: /opt/liferay/osgi/log4j/com.liferay.object.message.broker-log4j-ext.xml
+    name: liferay-configmap
+    subPath: com.liferay.object.message.broker-log4j-ext.xml
+  - mountPath: /opt/liferay/osgi/log4j/com.liferay.portal.trebuchet.impl-log4j-ext.xml
+    name: liferay-configmap
+    subPath: com.liferay.portal.trebuchet.impl-log4j-ext.xml
+dependencies:
+  rabbitmq:
+    source: statefulset
+    statefulset:
+      env:
+      - name: RABBITMQ_CLIENT_USERNAME
+        valueFrom:
+          configMapKeyRef:
+            name: liferay-default
+            key: RABBITMQ_CLIENT_USERNAME
+      - name: RABBITMQ_CLIENT_PASSWORD
+        valueFrom:
+          configMapKeyRef:
+            name: liferay-default
+            key: RABBITMQ_CLIENT_PASSWORD
+      - name: RABBITMQ_LOAD_DEFINITIONS
+        value: "yes"
+      - name: RABBITMQ_PASSWORD
+        value: rabbitmq
+      - name: RABBITMQ_PLUGINS
+        value: ",rabbitmq_management,rabbitmq_management_agent,rabbitmq_web_dispatch,rabbitmq_stomp,rabbitmq_web_stomp,rabbitmq_mqtt,rabbitmq_web_mqtt"
+      - name: RABBITMQ_USERNAME
+        value: rabbitmq
+      image:
+        repository: bitnami/rabbitmq
+        tag: 4.1.1-debian-12-r2
+        pullPolicy: IfNotPresent
+      ingress:
+        enabled: true
+        rules:
+        - host: rabbitmq.localtest.me
+          http:
+            paths:
+            - backend:
+                service:
+                  name: liferay-default-rabbitmq
+                  port:
+                    name: management
+              path: /
+              pathType: ImplementationSpecific
+      livenessProbe:
+        tcpSocket:
+          port: 5672
+        initialDelaySeconds: 40
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 6
+      podSecurityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+      ports:
+      - containerPort: 5672
+        name: amqp
+        protocol: TCP
+      - containerPort: 15672
+        name: management
+        protocol: TCP
+      - containerPort: 15674
+        name: stomp
+        protocol: TCP
+      - containerPort: 15675
+        name: mqtt
+        protocol: TCP
+      readinessProbe:
+        tcpSocket:
+          port: 5672
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 6
+      replicaCount: 1
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 1Gi
+        requests:
+          cpu: 500m
+          memory: 256Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+        seLinuxOptions: {}
+        seccompProfile:
+          type: RuntimeDefault
+      service:
+        ports:
+        - name: amqp
+          port: 5672
+          protocol: TCP
+          targetPort: amqp
+        - name: management
+          port: 15672
+          protocol: TCP
+          targetPort: management
+        - name: mqtt
+          port: 15675
+          protocol: TCP
+          targetPort: mqtt
+        - name: stomp
+          port: 15674
+          protocol: TCP
+          targetPort: stomp
+        type: ClusterIP
+      startupProbe:
+        tcpSocket:
+          port: 5672
+        initialDelaySeconds: 2
+        failureThreshold: 15
+        periodSeconds: 5
+        timeoutSeconds: 5
+      storage: 1Gi
+      updateStrategy:
+        type: RollingUpdate
+      volumeClaimTemplates:
+      - metadata:
+          name: liferay-rabbitmq-pvc
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+      volumeMounts:
+      - mountPath: /bitnami/rabbitmq
+        name: liferay-rabbitmq-pvc
+        subPath: rabbitmq/data
+      - mountPath: /bitnami/rabbitmq/conf/custom.conf
+        name: liferay-configmap
+        subPath: rabbitmq.conf
+      - mountPath: /opt/bitnami/rabbitmq/.rabbitmq
+        name: liferay-rabbitmq-pvc
+        subPath: rabbitmq/home
+      - mountPath: /opt/bitnami/rabbitmq/etc/rabbitmq
+        name: liferay-rabbitmq-pvc
+        subPath: rabbitmq/config
+      - mountPath: /app/load_definition.json
+        name: liferay-configmap
+        subPath: rabbitmq-definitions.json
+      - mountPath: /opt/bitnami/rabbitmq/var/lib/rabbitmq
+        name: liferay-rabbitmq-pvc
+        subPath: system/var
+      - mountPath: /tmp
+        name: liferay-rabbitmq-pvc
+        subPath: system/tmp
+      volumes:
+      - configMap:
+          name: liferay-default
+          optional: true
+        name: liferay-configmap
+

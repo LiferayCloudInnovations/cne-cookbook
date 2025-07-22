@@ -1,0 +1,3 @@
+ingredients:
+  - elasticsearch-values.yaml
+  - postgresql-values.yaml
