@@ -3,6 +3,7 @@ SHELL = bash
 
 .DEFAULT_GOAL = help
 CLUSTER_NAME := cne
+DOMAIN_SUFFIX := localtest.me
 DXP_IMAGE_TAG := 7.4.13-u132
 LOCAL_MOUNT := tmp/mnt/local
 
@@ -55,7 +56,7 @@ mkdir-local-mount: ## Create k3d local mount folder
 recipe: start-cluster deploy-workspace deploy-dxp deploy-cx ## Make a recipe (can't be called directly without setting RECIPE var)
 
 patch-coredns: switch-context ## Patch CoreDNS to resolve hostnames
-	@./resources/scripts/patch_coredns.sh ${CLUSTER_NAME}
+	@./resources/scripts/patch_coredns.sh ${CLUSTER_NAME} ${DOMAIN_SUFFIX}
 	@kubectl rollout restart deployment coredns -n kube-system
 
 create-cluster: mkdir-local-mount ## Start k3d cluster

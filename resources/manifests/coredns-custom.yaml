@@ -4,15 +4,15 @@ metadata:
   name: coredns-custom
   namespace: kube-system
 data:
-  localtest.me.server: |
-    localtest.me:53 {
+  __DOMAIN_SUFFIX__.server: |
+    __DOMAIN_SUFFIX__:53 {
       errors
-      template IN A localtest.me {
-        match .*.localtest.me
+      template IN A __DOMAIN_SUFFIX__ {
+        match .*.__DOMAIN_SUFFIX__
         answer "{{ .Name }} 60 IN A __GATEWAY_IP__"
       }
-      template IN AAAA localtest.me {
-        match .*.localtest.me
+      template IN AAAA __DOMAIN_SUFFIX__ {
+        match .*.__DOMAIN_SUFFIX__
         rcode NXDOMAIN
       }
       cache 30
