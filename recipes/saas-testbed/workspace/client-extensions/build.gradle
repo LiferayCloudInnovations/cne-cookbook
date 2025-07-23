@@ -1,0 +1,1 @@
+apply from : "${rootDir}/../../../resources/scripts/cx.gradle"

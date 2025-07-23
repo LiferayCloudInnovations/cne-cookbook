@@ -17,6 +17,10 @@ cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export RECIPE="cx-message-broker-poc"
 	$(MAKE) recipe
 
+saas-testbed: ## SaaS Testbed
+	export RECIPE="saas-testbed"
+	$(MAKE) recipe
+
 ### TARGETS ###
 
 check-recipe-var: ## Check if RECIPE variable is set, throw error otherwise
