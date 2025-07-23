@@ -5,11 +5,6 @@ ext {
 	buildTimestamp = new Date().format("yyyyMMddHHmmss")
 }
 
-def buildSubprojects = task build
-def cleanSubprojects = task clean
-def helmDeploySubprojects = task helmDeploy
-def helmUndeploySubprojects = task helmUndeploy
-
 subprojects {
 	afterEvaluate {
 		buildDockerImage {
@@ -52,9 +47,6 @@ subprojects {
         }
 
 		task helmDeploy(type: Exec) {
-doFirst {
-        println "Executing command: ${commandLine.join(' ')}"
-    }
 			description = "Deploys the client extension using Helm."
 			commandLine(
 				'helm',
@@ -91,9 +83,5 @@ doFirst {
 			ignoreExitValue = true
 		}
 
-		buildSubprojects.dependsOn tasks["build"]
-		cleanSubprojects.dependsOn tasks["clean"]
-		helmDeploySubprojects.dependsOn tasks["helmDeploy"]
-		helmUndeploySubprojects.dependsOn tasks["helmUndeploy"]
 	}
 }
