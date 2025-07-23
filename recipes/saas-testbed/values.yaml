@@ -7,19 +7,6 @@ customVolumeMounts:
   - mountPath: /opt/liferay/osgi/war
     name: liferay-persistent-volume
     subPath: osgi/war
-ingress:
-  enabled: true
-  rules:
-  - host: "*.dxp.localtest.me"
-    http:
-      paths:
-      - backend:
-          service:
-            name: liferay-default
-            port:
-              name: http
-        path: /
-        pathType: ImplementationSpecific
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
