@@ -20,19 +20,9 @@ customInitContainers:
             name: mount-local
 customVolumeMounts:
   x-cx-message-broker-poc:
-  - mountPath: /etc/liferay/mount/files/deploy/license.xml
-    name: liferay-configmap
-    subPath: license.xml
-  - mountPath: /mnt/local
-    name: mount-local
-  - mountPath: /opt/liferay/osgi/war
-    name: liferay-persistent-volume
-    subPath: osgi/war
-customVolumes:
-  x-cx-rabbitmq-demo:
-  - hostPath:
-      path: /mnt/local
-    name: mount-local
+    - mountPath: /opt/liferay/osgi/war
+      name: liferay-persistent-volume
+      subPath: osgi/war
 ingress:
   enabled: true
   rules:

@@ -102,10 +102,6 @@ configmap:
     RABBITMQ_CLIENT_PASSWORD: lfrrabbitmq
 customEnv:
   x-rabbitmq:
-  - name: LIFERAY_DISABLE_TRIAL_LICENSE
-    value: "true"
-  - name: LIFERAY_JPDA_ENABLED
-    value: "true"
   - name: RABBITMQ_CLIENT_USERNAME
     valueFrom:
       configMapKeyRef:

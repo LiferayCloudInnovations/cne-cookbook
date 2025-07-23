@@ -1,9 +1,7 @@
 customEnv:
   x-cx-direct-deploy-test:
-  - name: LIFERAY_DISABLE_TRIAL_LICENSE
-    value: "true"
-  - name: LIFERAY_JPDA_ENABLED
-    value: "true"
+    - name: LIFERAY_JPDA_ENABLED
+      value: "true"
 customInitContainers:
   x-cx-direct-deploy-test:
     - containerTemplate: |
@@ -26,19 +24,9 @@ customInitContainers:
             name: mount-local
 customVolumeMounts:
   x-cx-direct-deploy-test:
-    - mountPath: /etc/liferay/mount/files/deploy/license.xml
-      name: liferay-configmap
-      subPath: license.xml
-    - mountPath: /mnt/local
-      name: mount-local
     - mountPath: /opt/liferay/osgi/war
       name: liferay-persistent-volume
       subPath: osgi/war
-customVolumes:
-  x-cx-direct-deploy-test:
-    - hostPath:
-        path: /mnt/local
-      name: mount-local
 ingress:
   enabled: true
   rules:
