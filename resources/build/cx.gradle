@@ -71,9 +71,9 @@ doFirst {
 				"image.tag=${buildTimestamp}",
 				'--set',
 				'clientExtensionConfig.virtualInstanceId=main.dxp.localtest.me',
-				rootProject.file('../../../charts/client-extension')
+				rootProject.file('../../../resources/charts/client-extension')
 			)
-			//ignoreExitValue = true
+			ignoreExitValue = true
 
 			dependsOn tasks["pushDockerImage"]
 		}

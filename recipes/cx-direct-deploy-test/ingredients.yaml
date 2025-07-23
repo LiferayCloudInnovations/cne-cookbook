@@ -1,0 +1,5 @@
+ingredients:
+  - elasticsearch-values.yaml
+  - license-values.yaml
+  - mountlocal-values.yaml
+  - postgresql-values.yaml

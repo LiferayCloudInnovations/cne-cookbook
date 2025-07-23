@@ -1,0 +1,9 @@
+customVolumes:
+  x-mountlocal:
+    - hostPath:
+        path: /mnt/local
+      name: mount-local
+customVolumeMounts:
+  x-mountlocal:
+    - mountPath: /mnt/local
+      name: mount-local

@@ -1,0 +1,37 @@
+customEnv:
+  x-saas-testbed:
+  - name: LIFERAY_JPDA_ENABLED
+    value: "true"
+customVolumeMounts:
+  x-saas-testbed:
+  - mountPath: /opt/liferay/osgi/war
+    name: liferay-persistent-volume
+    subPath: osgi/war
+ingress:
+  enabled: true
+  rules:
+  - host: "*.dxp.localtest.me"
+    http:
+      paths:
+      - backend:
+          service:
+            name: liferay-default
+            port:
+              name: http
+        path: /
+        pathType: ImplementationSpecific
+portalProperties: |
+  include-and-override=portal-developer.properties
+  company.default.virtual.host.mail.domain=main.dxp.localtest.me
+  company.default.virtual.host.name=main.dxp.localtest.me
+  company.default.web.id=main.dxp.localtest.me
+  web.server.display.node=true
+  web.server.protocol=http
+#replicaCount: 2
+resources:
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+  requests:
+    cpu: 2000m
+    memory: 6Gi
