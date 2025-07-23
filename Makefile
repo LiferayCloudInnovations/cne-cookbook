@@ -4,27 +4,30 @@ SHELL = bash
 .DEFAULT_GOAL = help
 CLUSTER_NAME := cne
 DOMAIN_SUFFIX := localtest.me
-DXP_IMAGE_TAG := 7.4.13-u132
+DXP_IMAGE_TAG_DEFAULT := 7.4.13-u132
 LOCAL_MOUNT := tmp/mnt/local
 
 ### RECIPES ###
 
 cx-direct-deploy-test: ## Test direct deploy cx
 	export RECIPE="cx-direct-deploy-test"
+	export DXP_IMAGE_TAG=$DXP_IMAGE_TAG_DEFAULT
 	$(MAKE) recipe
 
 cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export RECIPE="cx-message-broker-poc"
+	export DXP_IMAGE_TAG=$DXP_IMAGE_TAG_DEFAULT
 	$(MAKE) recipe
 
 saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
+	export DXP_IMAGE_TAG="2024.q3.10"
 	$(MAKE) recipe
 
 ### TARGETS ###
 
-check-recipe-var: ## Check if RECIPE variable is set, throw error otherwise
-	@./resources/scripts/check_recipe_var.sh
+check-recipe-vars: ## Check if recipe variables are set, throw error otherwise
+	@./resources/scripts/check_recipe_vars.sh
 
 clean: clean-cluster ## Clean up everything
 
@@ -37,15 +40,15 @@ clean-data: switch-context undeploy-dxp ## Clean up data in the cluster
 clean-local-mount: ## Clean local mount
 	@rm -rf "${PWD}/${LOCAL_MOUNT}"/*
 
-deploy: deploy-workspace deploy-cx deploy-dxp
+deploy: deploy-workspace deploy-dxp deploy-cx
 
-deploy-cx: check-recipe-var switch-context ## Deploy Client extensions to cluster
-	@cd "${PWD}/recipes/${RECIPE}/workspace" && (./gradlew :client-extensions:helmDeploy -x test -x check || true)
+deploy-cx: check-recipe-vars switch-context ## Deploy Client extensions to cluster
+	@cd "${PWD}/recipes/${RECIPE}/workspace" && (./gradlew helmDeploy -x test -x check || true)
 
-deploy-dxp: check-recipe-var deploy-workspace switch-context license
+deploy-dxp: check-recipe-vars deploy-workspace switch-context license
 	@./resources/scripts/deploy_dxp.sh ${RECIPE} ${DXP_IMAGE_TAG}
 
-deploy-workspace: check-recipe-var clean-local-mount ## Deploy Liferay modules to local mount
+deploy-workspace: check-recipe-vars clean-local-mount ## Deploy Liferay modules to local mount
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
 
 help:

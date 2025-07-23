@@ -33,7 +33,7 @@ subprojects {
             doLast {
                 generatedFilePath.getParentFile().mkdirs()
                 def clientExtensionConfigContent = layout.buildDirectory.file("liferay-client-extension-build/${project.name}.client-extension-config.json").get().asFile.text.replaceAll(/[\r\n]+/, "").trim()
-                def cxExtraFragment = project.file("cx-extra.yaml_fragment").text.trim()
+                def cxExtraFragment = project.file("cx.yaml_extra").text.trim()
                 def valuesYamlContent = """clientExtensionConfig:
   configJsons:
     - |
