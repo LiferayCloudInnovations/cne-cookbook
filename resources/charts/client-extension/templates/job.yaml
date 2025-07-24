@@ -11,7 +11,7 @@ metadata:
     name: {{ include "liferay-client-extension.fullname" . }}
 spec:
     {{- with .Values.job }}
-    backoffLimit: {{ .backoffLimit | default 6 }}
+    backoffLimit: {{ .clientExtensionConfig.jobBackoffLimit | default 6 }}
     {{- end }}
     template:
         metadata:

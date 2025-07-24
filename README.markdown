@@ -10,11 +10,11 @@ reproducible local k8s cluster environment.
 
 ## Key Features
 
-- Automated k3d cluster creation and management
-- Clound Native Recipes for deploying Liferay DXP and Client Extensions
-  workloads
-- Easy cleanup and redeployment commands
-- Local filesystem mount management for workspace deployments
+- Scripts for creating and managing a local k3d Kubernetes cluster
+- Makefile recipes for deploying Liferay DXP and client extensions
+- Reusable ingredients files that makes it easy to compose different helm chart
+  customizations
+- Commands for cleaning up deployments and cluster resources
 
 ## Main Commands
 
@@ -22,11 +22,13 @@ Run these commands from the root of the repository using `make <target>`.
 
 ### Recipes
 
-- `make cx-direct-deploy-test` Deploys the "cx-direct-deploy-test" recipe using
-  the default DXP image.
-
 - `make cx-message-broker-poc` Deploys the "cx-message-broker-poc" recipe using
-  the default DXP image.
+  the default DXP image. This recipe includes a message broker for CX
+  applications demonstration that was created during the 2025 Exchange Program.
+
+- `make cx-samples` Deploys the "cx-samples" recipe using the default DXP image.
+  This recipe includes various client extension samples that demonstrates one of
+  each different 'kind' of CX deployment.
 
 - `make saas-testbed` Deploys the "saas-testbed" recipe using a specific SaaS
   DXP image.
@@ -61,13 +63,15 @@ recipe variables are set. It will prompt for any missing variables.
 
 - `make clean-local-mount` Removes files from the local mount directory.
 
+- `make clean-workspace` Cleans up the recipe workspace directory build files
+
 ### Undeploy
 
 - `make undeploy` Removes both DXP and client extensions from the cluster.
 
-- `make undeploy-dxp` Removes DXP deployment and related config maps.
+- `make undeploy-dxp` Removes DXP deployment and related ConfigMaps.
 
-- `make undeploy-cx` Removes client extensions and related config maps.
+- `make undeploy-cx` Removes client extensions and related ConfigMaps.
 
 ### Utilities
 
@@ -146,3 +150,12 @@ Ensure you have the following tools installed on your system:
 - Each ingredient file that contains `customXXX` values must use a key prefixed
   with `x-` This allows the Liferay helm chart to merge these values
   non-destructively with the default values provided by the chart.
+
+### Deploying Client Extensions
+
+- In order to deploy client extensions, you need to have a file next to the
+  `client-extension.yaml` file named `cx.yaml_extra` In this file it will
+  contain the fragment of values.yaml that are needed when deploying the Liferay
+  helm chart for client extensions.
+- See examples in the
+  `cx-samples/workspace/client-extensions/**/cx.values_extra`

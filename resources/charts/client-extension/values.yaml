@@ -9,6 +9,7 @@ clientExtensionConfig:
     configJsons: []
     cronSchedule: ""
     kind: ""
+    jobBackoffLimit: 6
     mainDomain: ""
     mountInitConfig: false
     setupMainDomainOnCoreDNS: false
@@ -26,8 +27,6 @@ ingress:
     enabled: false
     hosts: []
     tls: []
-job:
-    backoffLimit: 6
 labels: {}
 livenessProbe:
     httpGet:

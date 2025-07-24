@@ -19,6 +19,11 @@ cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
+cx-samples: ## Client Extensions Samples
+	export RECIPE="cx-samples"
+	export DXP_IMAGE_TAG="2025.q1.15-lts"
+	$(MAKE) recipe
+
 saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
 	export DXP_IMAGE_TAG="2025.q1.15-lts"
@@ -39,6 +44,9 @@ clean-data: switch-context undeploy-dxp ## Clean up data in the cluster
 
 clean-local-mount: ## Clean local mount
 	@rm -rf "${PWD}/${LOCAL_MOUNT}"/*
+
+clean-workspace: ## Clean recipe workspace
+	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew clean
 
 deploy: deploy-workspace deploy-dxp deploy-cx
 
