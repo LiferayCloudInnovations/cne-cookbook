@@ -11,17 +11,17 @@ LOCAL_MOUNT := tmp/mnt/local
 
 cx-direct-deploy-test: ## Test direct deploy cx
 	export RECIPE="cx-direct-deploy-test"
-	export DXP_IMAGE_TAG=$DXP_IMAGE_TAG_DEFAULT
+	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
 cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export RECIPE="cx-message-broker-poc"
-	export DXP_IMAGE_TAG=$DXP_IMAGE_TAG_DEFAULT
+	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
 saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
-	export DXP_IMAGE_TAG="2024.q3.10"
+	export DXP_IMAGE_TAG="2025.q1.15-lts"
 	$(MAKE) recipe
 
 ### TARGETS ###

@@ -1,15 +1,36 @@
-customEnv:
-  x-saas-testbed:
-    - name: LIFERAY_JPDA_ENABLED
-      value: "true"
-customVolumeMounts:
-  x-saas-testbed:
-    - mountPath: /etc/liferay/mount/patching
-      name: mount-local
-      subPath: patching
-    - mountPath: /opt/liferay/osgi/war
-      name: liferay-persistent-volume
-      subPath: osgi/war
+# customInitContainers:
+#   x-saas-testbed:
+#     - containerTemplate: |
+#         - command:
+#           - bash
+#           - -c
+#           - |
+#             if [ ! -d /temp/liferay/patching-tool ] || [ -z "$(ls -A /temp/liferay/patching-tool)" ]
+#             then
+#               mkdir -p /temp/liferay/patching-tool
+#
+#               cp -Rfrv /opt/liferay/patching-tool/* /temp/liferay/patching-tool
+#             fi
+#           image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
+#           imagePullPolicy: {{ .image.pullPolicy }}
+#           name: copy-patching-tool
+#           volumeMounts:
+#           - mountPath: /temp
+#             name: liferay-persistent-volume
+# customVolumeMounts:
+#   x-saas-testbed:
+#     - mountPath: /etc/liferay/mount/patching
+#       name: mount-local
+#       subPath: patching
+#     - mountPath: /opt/liferay/patching-tool
+#       name: liferay-persistent-volume
+#       subPath: liferay/patching-tool
+#     - mountPath: /opt/liferay/tomcat/webapps/ROOT/WEB-INF/patching_backup
+#       name: liferay-persistent-volume
+#       subPath: liferay/patching_backup
+#     - mountPath: /opt/liferay/osgi/war
+#       name: liferay-persistent-volume
+#       subPath: osgi/war
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
