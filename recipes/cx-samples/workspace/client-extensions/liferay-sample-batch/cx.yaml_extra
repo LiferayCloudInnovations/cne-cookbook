@@ -1,0 +1,5 @@
+  jobBackoffLimit: 30
+  kind: Job
+  mountInitConfig: true
+env:
+  LIFERAY_BATCH_OAUTH_APP_ERC: liferay-sample-batch-oauth-application-headless-server

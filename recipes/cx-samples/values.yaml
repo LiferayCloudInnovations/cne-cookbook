@@ -1,0 +1,19 @@
+customVolumeMounts:
+  x-cx-message-broker-poc:
+    - mountPath: /opt/liferay/osgi/war
+      name: liferay-persistent-volume
+      subPath: osgi/war
+portalProperties: |
+  include-and-override=portal-developer.properties
+  company.default.virtual.host.mail.domain=main.dxp.localtest.me
+  company.default.virtual.host.name=main.dxp.localtest.me
+  company.default.web.id=main.dxp.localtest.me
+  web.server.display.node=true
+  web.server.protocol=http
+resources:
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+  requests:
+    cpu: 2000m
+    memory: 6Gi

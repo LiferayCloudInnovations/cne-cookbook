@@ -1,0 +1,3 @@
+  cronSchedule: "*/15 * * * *"
+  kind: CronJob
+  mountInitConfig: true
