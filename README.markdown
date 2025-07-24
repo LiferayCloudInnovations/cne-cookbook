@@ -118,6 +118,7 @@ recipe variables are set. It will prompt for any missing variables.
 
 Ensure you have the following tools installed on your system:
 
+- make (plus sed/grep basically any POSIX compliant shell)
 - Docker
 - k3d
 - kubectl
@@ -127,16 +128,21 @@ Ensure you have the following tools installed on your system:
 
 ## Contribution Notes
 
+### Adding New Recipes
+
 - Recipes are defined in the `recipes/` directory. Each recipe contains an
   ingredients file that points to other values files that are needed to
-  customize the liferay chart deployment.  
-   Also each recipe has an optional 'workspace/' folder that contains osgi
+  customize the liferay chart deployment.
+- Environment variables such as `RECIPE` and `DXP_IMAGE_TAG` are set and then
+  `recipe` target is called.
+- Also each recipe has an optional 'workspace/' folder that contains osgi
   modules that will be deployed to DXP or client extension projects that will be
   deployed to the cluster using provisional client-extension helm chart.
+
+### Reusing Ingredients
+
 - Ingredients are defined in the `ingredients/` directory. These are reusable
   values files that can be used across multiple recipes.
-- Environment variables such as `RECIPE` and `DXP_IMAGE_TAG` are set
-  automatically by recipe targets.
-
-This setup is ideal for local development, testing, and experimentation with
-Liferay DXP and its extensions in a reproducible Kubernetes environment.
+- Each ingredient file that contains `customXXX` values must use a key prefixed
+  with `x-` This allows the Liferay helm chart to merge these values
+  non-destructively with the default values provided by the chart.
