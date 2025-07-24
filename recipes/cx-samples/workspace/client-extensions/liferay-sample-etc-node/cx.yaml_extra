@@ -20,10 +20,3 @@ readinessProbe:
 service:
     enabled: true
     port: 3001
-readinessProbe:
-  httpGet:
-    path: /ready
-service:
-  enabled: true
-  port: 58081
-

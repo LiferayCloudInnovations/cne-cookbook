@@ -21,12 +21,14 @@ cx-message-broker-poc: ## Client Extensions with Message Broker POC
 
 cx-samples: ## Client Extensions Samples
 	export RECIPE="cx-samples"
-	export DXP_IMAGE_TAG="2025.q1.15-lts"
+	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
+	#export DXP_IMAGE_TAG="2025.q1.15-lts"
 	$(MAKE) recipe
 
 saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
-	export DXP_IMAGE_TAG="2025.q1.15-lts"
+	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
+	#export DXP_IMAGE_TAG="2025.q1.15-lts"
 	$(MAKE) recipe
 
 ### TARGETS ###

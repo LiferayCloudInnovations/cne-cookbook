@@ -1,5 +1,4 @@
 ingredients:
-  - elasticsearch-values.yaml
   - ingress-values.yaml
   - license-values.yaml
   - mountlocal-values.yaml
