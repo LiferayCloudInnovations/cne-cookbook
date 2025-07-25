@@ -47,7 +47,7 @@ clean-data: switch-context undeploy-dxp ## Clean up data in the cluster
 clean-local-mount: ## Clean local mount
 	@rm -rf "${PWD}/${LOCAL_MOUNT}"/*
 
-clean-workspace: ## Clean recipe workspace
+clean-workspace: check-recipe-vars ## Clean recipe workspace
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew clean
 
 deploy: deploy-workspace deploy-dxp deploy-cx
