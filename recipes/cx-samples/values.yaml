@@ -1,5 +1,5 @@
 customVolumeMounts:
-  x-cx-message-broker-poc:
+  x-cx-samples:
     - mountPath: /opt/liferay/osgi/war
       name: liferay-persistent-volume
       subPath: osgi/war
@@ -8,6 +8,8 @@ portalProperties: |
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
   company.default.virtual.host.name=main.dxp.localtest.me
   company.default.web.id=main.dxp.localtest.me
+  login.dialog.disabled=true
+  passwords.default.policy.change.required=false
   web.server.display.node=true
   web.server.protocol=http
 resources:
