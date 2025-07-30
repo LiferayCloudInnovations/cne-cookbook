@@ -4,29 +4,24 @@ SHELL = bash
 .DEFAULT_GOAL = help
 CLUSTER_NAME := cne
 DOMAIN_SUFFIX := localtest.me
-DXP_IMAGE_TAG_DEFAULT := 2025.q1.15-lts
 LOCAL_MOUNT := tmp/mnt/local
 
 ### RECIPES ###
 
 cx-direct-deploy-test: ## Test direct deploy cx
 	export RECIPE="cx-direct-deploy-test"
-	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
 cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export RECIPE="cx-message-broker-poc"
-	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
 cx-samples: ## Client Extensions Samples
 	export RECIPE="cx-samples"
-	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
 saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
-	export DXP_IMAGE_TAG="${DXP_IMAGE_TAG_DEFAULT}"
 	$(MAKE) recipe
 
 ### TARGETS ###
@@ -47,6 +42,7 @@ clean-local-mount: ## Clean local mount
 
 clean-workspace: check-recipe-vars ## Clean recipe workspace
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew clean
+	@rm -rf "${PWD}/recipes/${RECIPE}/workspace/bundles"
 
 deploy: deploy-workspace deploy-dxp deploy-cx
 
@@ -54,7 +50,7 @@ deploy-cx: check-recipe-vars switch-context ## Deploy Client extensions to clust
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && (./gradlew helmDeploy -x test -x check || true)
 
 deploy-dxp: check-recipe-vars deploy-workspace switch-context license
-	@./resources/scripts/deploy_dxp.sh ${RECIPE} ${DXP_IMAGE_TAG}
+	@./resources/scripts/deploy_dxp.sh ${RECIPE}
 
 deploy-workspace: check-recipe-vars clean-local-mount ## Deploy Liferay modules to local mount
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check
@@ -81,7 +77,7 @@ create-cluster: mkdir-local-mount ## Start k3d cluster
 			--registry-create registry:5000 \
 			--volume "${PWD}/${LOCAL_MOUNT}:/mnt/local@all:*"
 
-install-ksgate: create-cluster
+install-ksgate: switch-context create-cluster
 	@helm upgrade -i ksgate \
 		oci://ghcr.io/ksgate/charts/ksgate \
 		--create-namespace \

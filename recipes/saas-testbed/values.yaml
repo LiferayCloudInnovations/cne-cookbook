@@ -1,49 +1,58 @@
-# customInitContainers:
-#   x-saas-testbed:
-#     - containerTemplate: |
-#         - command:
-#           - bash
-#           - -c
-#           - |
-#             if [ ! -d /temp/liferay/patching-tool ] || [ -z "$(ls -A /temp/liferay/patching-tool)" ]
-#             then
-#               mkdir -p /temp/liferay/patching-tool
-#
-#               cp -Rfrv /opt/liferay/patching-tool/* /temp/liferay/patching-tool
-#             fi
-#           image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
-#           imagePullPolicy: {{ .image.pullPolicy }}
-#           name: copy-patching-tool
-#           volumeMounts:
-#           - mountPath: /temp
-#             name: liferay-persistent-volume
-# customVolumeMounts:
-#   x-saas-testbed:
-#     - mountPath: /etc/liferay/mount/patching
-#       name: mount-local
-#       subPath: patching
-#     - mountPath: /opt/liferay/patching-tool
-#       name: liferay-persistent-volume
-#       subPath: liferay/patching-tool
-#     - mountPath: /opt/liferay/tomcat/webapps/ROOT/WEB-INF/patching_backup
-#       name: liferay-persistent-volume
-#       subPath: liferay/patching_backup
-#     - mountPath: /opt/liferay/osgi/war
-#       name: liferay-persistent-volume
-#       subPath: osgi/war
+configmap:
+  data:
+    com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config: |
+      active=B"true"
+      maxUsers=I"0"
+      mx="able.dxp.localtest.me"
+      siteInitializerKey="blank-site-initializer"
+      virtualHostname="able.dxp.localtest.me"
+      adminScreenName="able"
+      adminEmailAddress="able@able.dxp.localtest.me"
+      adminFirstName="able"
+      adminMiddleName="able"
+      adminLastName="able"
+      addDefaultAdminUser=B"true"
+    com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-baker.dxp.localtest.me.config: |
+      active=B"true"
+      maxUsers=I"0"
+      mx="baker.dxp.localtest.me"
+      siteInitializerKey="blank-site-initializer"
+      virtualHostname="baker.dxp.localtest.me"
+      adminScreenName="baker"
+      adminEmailAddress="baker@baker.dxp.localtest.me"
+      adminFirstName="baker"
+      adminMiddleName="baker"
+      adminLastName="baker"
+      addDefaultAdminUser=B"true"
+customVolumeMounts:
+   x-saas-testbed:
+     - mountPath: /etc/liferay/mount/patching
+       name: mount-local
+       subPath: patching
+     - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~able.dxp.localtest.me.config
+       name: liferay-configmap
+       subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config
+     - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~baker.dxp.localtest.me.config
+       name: liferay-configmap
+       subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-baker.dxp.localtest.me.config
+image:
+  tag: 2025.q1.8-lts
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
   company.default.virtual.host.name=main.dxp.localtest.me
   company.default.web.id=main.dxp.localtest.me
   login.dialog.disabled=true
+  passwords.default.policy.change.required=false
   web.server.display.node=true
   web.server.protocol=http
-#replicaCount: 2
+replicaCount: 2
 resources:
   limits:
+    cpu: 8000m
+    memory: 12Gi
+  requests:
     cpu: 4000m
     memory: 8Gi
-  requests:
-    cpu: 2000m
-    memory: 6Gi
+securityContext:
+  readOnlyRootFilesystem: false

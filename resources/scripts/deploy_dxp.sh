@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 RECIPE=$1
-DXP_IMAGE_TAG=$2
 
 values_files=()
 
@@ -19,7 +18,6 @@ helm upgrade -i liferay \
 		$values_args \
 		--create-namespace \
 		--namespace liferay-system \
-		--set "image.tag=${DXP_IMAGE_TAG}" \
 		--set-file "configmap.data.license\.xml=license.xml" \
 		--timeout 10m \
 		--wait

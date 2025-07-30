@@ -27,6 +27,8 @@ customVolumeMounts:
     - mountPath: /opt/liferay/osgi/war
       name: liferay-persistent-volume
       subPath: osgi/war
+image:
+  tag: 2025.q1.15-lts
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
