@@ -1,0 +1,71 @@
+configmap:
+  data:
+    com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config: |
+      active=B"true"
+      maxUsers=I"0"
+      mx="able.dxp.localtest.me"
+      siteInitializerKey="blank-site-initializer"
+      virtualHostname="able.dxp.localtest.me"
+      adminScreenName="able"
+      adminEmailAddress="able@able.dxp.localtest.me"
+      adminFirstName="able"
+      adminMiddleName="able"
+      adminLastName="able"
+      addDefaultAdminUser=B"true"
+    com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-baker.dxp.localtest.me.config: |
+      active=B"true"
+      maxUsers=I"0"
+      mx="baker.dxp.localtest.me"
+      siteInitializerKey="blank-site-initializer"
+      virtualHostname="baker.dxp.localtest.me"
+      adminScreenName="baker"
+      adminEmailAddress="baker@baker.dxp.localtest.me"
+      adminFirstName="baker"
+      adminMiddleName="baker"
+      adminLastName="baker"
+      addDefaultAdminUser=B"true"
+customVolumeMounts:
+   x-saas-testbed:
+     - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~able.dxp.localtest.me.config
+       name: liferay-configmap
+       subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config
+     - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~baker.dxp.localtest.me.config
+       name: liferay-configmap
+       subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-baker.dxp.localtest.me.config
+customInitContainers:
+  x-cx-direct-deploy-test:
+    - containerTemplate: |
+        - command:
+          - bash
+          - -c
+          - |
+            if [ -d /mnt/local/osgi/client-extensions/ ]
+            then
+              mkdir -p /temp/liferay/deploy
+              cp -fv /mnt/local/osgi/client-extensions/*.zip /temp/liferay/deploy
+            fi
+          image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          name: cx-direct-deploy-test-init-container
+          volumeMounts:
+          - mountPath: /temp
+            name: liferay-persistent-volume
+          - mountPath: /mnt/local
+            name: mount-local
+image:
+  tag: 2025.q1.16-lts
+portalProperties: |
+  include-and-override=portal-developer.properties
+  company.default.virtual.host.mail.domain=main.dxp.localtest.me
+  company.default.virtual.host.name=main.dxp.localtest.me
+  company.default.web.id=main.dxp.localtest.me
+  login.dialog.disabled=true
+  web.server.display.node=true
+  web.server.protocol=http
+resources:
+  limits:
+    cpu: 6000m
+    memory: 12Gi
+  requests:
+    cpu: 2000m
+    memory: 8Gi

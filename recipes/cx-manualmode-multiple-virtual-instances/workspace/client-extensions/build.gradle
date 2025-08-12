@@ -1,0 +1,16 @@
+subprojects {
+    def projectDirName = parent.projectDir.name
+    println "Configuring tasks for subproject: $project.name. Directory name is: $projectDirName"
+  
+
+    def createClientExtensionConfigTasks = getTasksByName("createClientExtensionConfig", true)
+        createClientExtensionConfigTasks.each{
+            it.setVirtualInstanceId(projectDirName)
+    }
+
+    def buildClientExtensionZipTasks = getTasksByName("buildClientExtensionZip", true)
+        buildClientExtensionZipTasks.each{
+            it.setArchiveBaseName("${project.name}_${projectDirName}")
+    }
+
+}

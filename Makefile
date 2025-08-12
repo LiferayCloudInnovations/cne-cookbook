@@ -12,6 +12,10 @@ cx-direct-deploy-test: ## Test direct deploy cx
 	export RECIPE="cx-direct-deploy-test"
 	$(MAKE) recipe
 
+cx-manualmode-multiple-virtual-instances:
+	export RECIPE="cx-manualmode-multiple-virtual-instances"
+	$(MAKE) recipe
+
 cx-message-broker-poc: ## Client Extensions with Message Broker POC
 	export RECIPE="cx-message-broker-poc"
 	$(MAKE) recipe
