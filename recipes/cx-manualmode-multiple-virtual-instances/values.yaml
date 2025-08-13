@@ -60,6 +60,7 @@ portalProperties: |
   company.default.virtual.host.name=main.dxp.localtest.me
   company.default.web.id=main.dxp.localtest.me
   login.dialog.disabled=true
+  passwords.default.policy.change.required=false
   web.server.display.node=true
   web.server.protocol=http
 resources:
@@ -69,3 +70,7 @@ resources:
   requests:
     cpu: 2000m
     memory: 8Gi
+startupProbe:
+    failureThreshold: 90
+    initialDelaySeconds: 90
+    periodSeconds: 5
