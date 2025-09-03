@@ -247,7 +247,7 @@ portalProperties: |
   passwords.default.policy.change.required=false
   web.server.display.node=true
   web.server.protocol=http
-replicaCount: 2
+replicaCount: 1
 resources:
   limits:
     cpu: 8000m
