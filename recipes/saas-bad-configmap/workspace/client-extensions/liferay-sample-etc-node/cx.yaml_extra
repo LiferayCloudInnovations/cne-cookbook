@@ -1,0 +1,23 @@
+  kind: Deployment
+  virtualInstanceId: able.dxp.localtest.me
+ingress:
+    enabled: true
+livenessProbe:
+    httpGet:
+        path: /ready
+podAnnotations:
+  k8s.ksgate.org/liferay-sample-batch-job-succeeded: |
+      {
+        "apiVersion": "batch/v1",
+        "kind": "Job",
+        "name": "liferay-sample-batch-cx-liferay-client-extension",
+        "expression": "resource.status.succeeded >= 1"
+      }
+podSchedulingGates:
+  - name: k8s.ksgate.org/liferay-sample-batch-job-succeeded
+readinessProbe:
+    httpGet:
+        path: /ready
+service:
+    enabled: true
+    port: 3001
