@@ -24,6 +24,7 @@ configmap:
               <Logger level="INFO" name="com.liferay.bean.portlet" />
               <Logger level="WARN" name="com.liferay.mail.messaging" />
               <Logger level="ERROR" name="com.liferay.mail.service.impl.MailServiceImpl" />
+              <Logger level="DEBUG" name="com.liferay.object" />
               <Logger level="INFO" name="com.liferay.portal.action.JSONServiceAction" />
               <Logger level="WARN" name="com.liferay.portal.action.LayoutAction" />
               <Logger level="WARN" name="com.liferay.portal.bean.BeanLocatorImpl" />
@@ -63,6 +64,7 @@ configmap:
               <Logger level="INFO" name="com.liferay.portal.internal.servlet.MainServlet" />
               <Logger level="WARN" name="com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist" />
               <Logger level="ERROR" name="com.liferay.portal.kernel.bean.PortalBeanLocatorUtil" />
+              <Logger level="DEBUG" name="com.liferay.portal.k8s" />
               <Logger level="WARN" name="com.liferay.portal.kernel.cluster" />
               <Logger level="WARN" name="com.liferay.portal.kernel.dao.orm.QueryUtil" />
               <Logger level="INFO" name="com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil" />
@@ -235,7 +237,7 @@ customVolumeMounts:
        name: liferay-configmap
        subPath: portal-log4j-ext.xml
 image:
-  tag: 2025.q2.12
+  tag: 7.4.13.nightly-d9.0.52-20250902235411
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
@@ -245,6 +247,7 @@ portalProperties: |
   passwords.default.policy.change.required=false
   web.server.display.node=true
   web.server.protocol=http
+replicaCount: 2
 resources:
   limits:
     cpu: 8000m

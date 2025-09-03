@@ -1,7 +1,3 @@
-customEnv:
-  x-cx-direct-deploy-test:
-    - name: LIFERAY_JPDA_ENABLED
-      value: "true"
 customInitContainers:
   x-cx-direct-deploy-test:
     - containerTemplate: |

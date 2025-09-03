@@ -24,6 +24,10 @@ cx-samples: ## Client Extensions Samples
 	export RECIPE="cx-samples"
 	$(MAKE) recipe
 
+saas-bad-configmap: ## SaaS Bad Configmap
+	export RECIPE="saas-bad-configmap"
+	$(MAKE) recipe
+
 saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
 	$(MAKE) recipe

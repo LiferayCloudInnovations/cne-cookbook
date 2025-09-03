@@ -1,0 +1,5 @@
+customEnv:
+  x-jpda-enabled:
+    - name: LIFERAY_JPDA_ENABLED
+      value: "true"
+
