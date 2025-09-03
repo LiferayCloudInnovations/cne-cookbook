@@ -1,5 +1,6 @@
   kind: Job
   mountInitConfig: true
+  virtualInstanceId: main.dxp.localtest.me
 env:
   LIFERAY_BATCH_OAUTH_APP_ERC: ticket-entry-batch-importer
 job:

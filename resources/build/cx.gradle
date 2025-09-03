@@ -61,8 +61,8 @@ subprojects {
 				"image.repository=registry:5000/${project.name}",
 				'--set',
 				"image.tag=${buildTimestamp}",
-				'--set',
-				'clientExtensionConfig.virtualInstanceId=main.dxp.localtest.me',
+				//'--set',
+				//'clientExtensionConfig.virtualInstanceId=main.dxp.localtest.me',
 				rootProject.file('../../../resources/charts/client-extension')
 			)
 			ignoreExitValue = true

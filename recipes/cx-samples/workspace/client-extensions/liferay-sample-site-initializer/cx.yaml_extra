@@ -1,5 +1,6 @@
   jobBackoffLimit: 30
   kind: Job
   mountInitConfig: true
+  virtualInstanceId: main.dxp.localtest.me
 env:
   LIFERAY_BATCH_OAUTH_APP_ERC: liferay-sample-site-initializer-oauth-application-headless-server

@@ -1,5 +1,6 @@
   kind: Deployment
   mountInitConfig: true
+  virtualInstanceId: main.dxp.localtest.me
 ingress:
   enabled: true
 livenessProbe:
