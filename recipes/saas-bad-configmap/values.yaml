@@ -237,7 +237,8 @@ customVolumeMounts:
        name: liferay-configmap
        subPath: portal-log4j-ext.xml
 image:
-  tag: 7.4.13.nightly-d9.0.52-20250902235411
+  repository: gamerson/liferayportal-snapshot
+  tag: test-lpd-64551-20250904121757
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
