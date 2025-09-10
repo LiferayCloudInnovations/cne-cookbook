@@ -1,0 +1,50 @@
+assemble:
+    -   include:
+            -   "**/*.js"
+            -   package.json
+liferay-sample-etc-node-oauth-application-user-agent:
+    .serviceAddress: localhost:3001
+    .serviceScheme: http
+    name: Liferay Sample Etc Node OAuth Application User Agent
+    scopes:
+        -   Liferay.Headless.Admin.Workflow.everything
+    type: oAuthApplicationUserAgent
+liferay-sample-etc-node-oauth-application-user-agent2:
+    .serviceAddress: localhost:3001
+    .serviceScheme: http
+    name: Liferay Sample Etc Node OAuth Application User Agent2
+    scopes:
+        -   Liferay.Headless.Admin.Workflow.everything
+    type: oAuthApplicationUserAgent
+liferay-sample-etc-node-oauth-application-user-agent3:
+    .serviceAddress: localhost:3001
+    .serviceScheme: http
+    name: Liferay Sample Etc Node OAuth Application User Agent3
+    scopes:
+        -   Liferay.Headless.Admin.Workflow.everything
+    type: oAuthApplicationUserAgent
+liferay-sample-etc-node-oauth-application-user-agent4:
+    .serviceAddress: localhost:3001
+    .serviceScheme: http
+    name: Liferay Sample Etc Node OAuth Application User Agent4
+    scopes:
+        -   Liferay.Headless.Admin.Workflow.everything
+    type: oAuthApplicationUserAgent
+liferay-sample-etc-node-oauth-application-user-agent5:
+    .serviceAddress: localhost:3001
+    .serviceScheme: http
+    name: Liferay Sample Etc Node OAuth Application User Agent5
+    scopes:
+        -   Liferay.Headless.Admin.Workflow.everything
+    type: oAuthApplicationUserAgent
+
+liferay-sample-etc-node-object-action-1:
+    name: Liferay Sample Node Object Action 1
+    oAuth2ApplicationExternalReferenceCode: liferay-sample-etc-node-oauth-application-user-agent
+    resourcePath: /sample/object/action/1
+    type: objectAction
+liferay-sample-etc-node-object-action-2:
+    name: Liferay Sample Node Object Action 2
+    oAuth2ApplicationExternalReferenceCode: liferay-sample-etc-node-oauth-application-user-agent
+    resourcePath: /sample/object/action/2
+    type: objectAction

@@ -1,0 +1,13 @@
+  kind: Deployment
+  virtualInstanceId: able.dxp.localtest.me
+ingress:
+    enabled: true
+livenessProbe:
+    httpGet:
+        path: /ready
+readinessProbe:
+    httpGet:
+        path: /ready
+service:
+    enabled: true
+    port: 3001
