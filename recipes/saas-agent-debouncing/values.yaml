@@ -1,18 +1,3 @@
-configmap:
-  data:
-    com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config:
-      |
-      active=B"true"
-      maxUsers=I"0"
-      mx="able.dxp.localtest.me"
-      siteInitializerKey="blank-site-initializer"
-      virtualHostname="able.dxp.localtest.me"
-      adminScreenName="able"
-      adminEmailAddress="able@able.dxp.localtest.me"
-      adminFirstName="able"
-      adminMiddleName="able"
-      adminLastName="able"
-      addDefaultAdminUser=B"true"
 image:
   repository: gamerson/liferayportal-snapshot
   tag: test-lpd-63828-20250909131622
@@ -20,11 +5,6 @@ customEnv:
   x-saas-agent-debouncing:
     - name: "LIFERAY_CONFIGURATION_PERIOD_OVERRIDE_PERIOD_COM_PERIOD_LIFERAY_PERIOD_PORTAL_PERIOD_K_NUMBER8_S_PERIOD_AGENT_PERIOD_CONFIGURATION_PERIOD__UPPERCASEP_ORTAL_UPPERCASEK__NUMBER8_S_UPPERCASEA_GENT_UPPERCASEC_ONFIGURATION_UNDERLINE_DEBOUNCE_UPPERCASED_ELAY_UPPERCASEM_ILLIS"
       value: "0"
-customVolumeMounts:
-  x-saas-agent-debouncing:
-    - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~able.dxp.localtest.me.config
-      name: liferay-configmap
-      subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me

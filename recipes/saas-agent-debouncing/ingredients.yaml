@@ -1,4 +1,5 @@
 ingredients:
+  - able-virtualinstance-values.yaml
   - elasticsearch-values.yaml
   - ingress-values.yaml
   - jpda-values.yaml
