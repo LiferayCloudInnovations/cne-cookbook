@@ -1,1 +1,1 @@
-apply from: "${rootDir}/../../../scripts/modules.gradle"
+apply from: "${rootDir}/../../../resources/build/modules.gradle"
