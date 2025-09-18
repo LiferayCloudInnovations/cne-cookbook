@@ -1,0 +1,23 @@
+image:
+  tag: 2025.q1.17-lts
+portalProperties: |
+  admin.email.from.address=test@main.dxp.localtest.me
+  admin.email.from.name=Test Test
+  company.default.locale=en_US
+  company.default.time.zone=UTC
+  company.default.virtual.host.mail.domain=main.dxp.localtest.me
+  company.default.virtual.host.name=main.dxp.localtest.me
+  company.default.web.id=main.dxp.localtest.me
+  include-and-override=portal-developer.properties
+  login.dialog.disabled=true
+  passwords.default.policy.change.required=false
+  setup.wizard.enabled=false
+  web.server.display.node=true
+  web.server.protocol=http
+resources:
+  limits:
+    cpu: 8000m
+    memory: 12Gi
+  requests:
+    cpu: 4000m
+    memory: 8Gi
