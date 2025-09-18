@@ -3,5 +3,6 @@ ingredients:
   - ingress-values.yaml
   - license-values.yaml
   - mountlocal-values.yaml
+  - osgimodules-values.yaml
   - postgresql-values.yaml
   - rabbitmq-values.yaml

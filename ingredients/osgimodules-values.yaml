@@ -1,0 +1,21 @@
+customInitContainers:
+  x-osgimodules:
+    - containerTemplate: |
+        - command:
+          - bash
+          - -c
+          - |
+            if [ -d /mnt/local/osgi/modules/ ]
+            then
+              mkdir -p /temp/liferay/deploy
+              cp -fv /mnt/local/osgi/modules/*.jar /temp/liferay/deploy
+            fi
+          image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          name: osgimodules-init-container
+          volumeMounts:
+          - mountPath: /temp
+            name: liferay-persistent-volume
+          - mountPath: /mnt/local
+            name: mount-local
+

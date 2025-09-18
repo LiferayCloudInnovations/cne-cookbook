@@ -1,3 +1,7 @@
+.gradle/
 .idea/
+.settings/
+.project
+build/
 license.xml
 tmp/
