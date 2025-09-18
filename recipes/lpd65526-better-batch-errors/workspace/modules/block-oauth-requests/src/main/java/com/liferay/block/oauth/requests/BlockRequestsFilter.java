@@ -1,4 +1,4 @@
-package com.liferay.block.oauth.request;
+package com.liferay.block.oauth.requests;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
         },
         service = Filter.class
 )
-public class BlockRequestFilter extends BaseFilter {
+public class BlockRequestsFilter extends BaseFilter {
 
     @Activate
     public void activate() {
@@ -43,14 +43,16 @@ public class BlockRequestFilter extends BaseFilter {
             HttpServletResponse httpServletResponse, FilterChain filterChain)
             throws Exception {
 
-        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "xXx Access to this resource is forbidden");
+        //httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "xXx Access to this resource is forbidden");
+        //httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad request; I'm grumpy");
+        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access to resource");
 
         processFilter(
-                BlockRequestFilter.class.getName(), httpServletRequest,
+                BlockRequestsFilter.class.getName(), httpServletRequest,
                 httpServletResponse, filterChain);
     }
 
     private static final Log _log = LogFactoryUtil.getLog(
-            BlockRequestFilter.class);
+            BlockRequestsFilter.class);
 
 }

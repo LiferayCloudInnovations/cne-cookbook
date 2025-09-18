@@ -3,5 +3,6 @@
 .settings/
 .project
 build/
+dist/
 license.xml
 tmp/
