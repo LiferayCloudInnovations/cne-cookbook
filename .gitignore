@@ -1,7 +1,9 @@
+.classpath
 .gradle/
 .idea/
 .settings/
 .project
+bin/
 build/
 dist/
 license.xml
