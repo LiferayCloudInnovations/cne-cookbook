@@ -53,7 +53,7 @@ customInitContainers:
           - mountPath: /mnt/local
             name: mount-local
 image:
-  tag: 2025.q1.16-lts
+  tag: 2025.q1.17-lts
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
