@@ -1,4 +1,4 @@
-package com.liferay.block.oauth.requests;
+package com.liferay.block.cx.requests;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletResponse;
                 "before-filter=Auto Login Filter",
                 "dispatcher=REQUEST",
                 "servlet-context-name=",
-                "servlet-filter-name=Block Site Initializer Requests Servlet Filter",
-                "url-pattern=/o/headless-site/*"
+                "servlet-filter-name=Block Token Requests Servlet Filter",
+                "url-pattern=/o/oauth2/token"
         },
         service = Filter.class
 )
-public class BlockSiteInitializerRequestsFilter extends BaseFilter {
+public class BlockTokenRequestsFilter extends BaseFilter {
 
     @Override
     protected Log getLog() {
@@ -37,16 +37,18 @@ public class BlockSiteInitializerRequestsFilter extends BaseFilter {
             HttpServletResponse httpServletResponse, FilterChain filterChain)
             throws Exception {
 
-        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "xXx Access to this resource is forbidden");
+        //httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "xXx Access to this resource is forbidden");
         //httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad request; I'm grumpy");
-        //httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access to resource");
+        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access to resource");
+
+        _log.error(httpServletRequest.getRequestURI() + " blocked!");
 
         processFilter(
-                BlockSiteInitializerRequestsFilter.class.getName(), httpServletRequest,
+                BlockTokenRequestsFilter.class.getName(), httpServletRequest,
                 httpServletResponse, filterChain);
     }
 
     private static final Log _log = LogFactoryUtil.getLog(
-            BlockSiteInitializerRequestsFilter.class);
+            BlockTokenRequestsFilter.class);
 
 }

@@ -1,4 +1,0 @@
-Bundle-Name: Block OAuth Requests
-Bundle-SymbolicName: com.liferay.block.oauth.requests
-Bundle-Version: 1.0.0
--dsannotations-options: inherit

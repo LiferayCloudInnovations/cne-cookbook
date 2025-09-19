@@ -1,4 +1,4 @@
-package com.liferay.block.oauth.requests;
+package com.liferay.block.cx.requests;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -40,6 +40,8 @@ public class BlockBatchImportRequestsFilter extends BaseFilter {
         httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "xXx Access to this resource is forbidden");
         //httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad request; I'm grumpy");
         //httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access to resource");
+
+        _log.error(httpServletRequest.getRequestURI() + " blocked!");
 
         processFilter(
                 BlockBatchImportRequestsFilter.class.getName(), httpServletRequest,

@@ -1,4 +1,4 @@
-package com.liferay.block.oauth.requests;
+package com.liferay.block.cx.requests;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletResponse;
                 "before-filter=Auto Login Filter",
                 "dispatcher=REQUEST",
                 "servlet-context-name=",
-                "servlet-filter-name=Block Token Requests Servlet Filter",
-                "url-pattern=/o/oauth2/token"
+                "servlet-filter-name=Block Site Initializer Requests Servlet Filter",
+                "url-pattern=/o/headless-site/*"
         },
         service = Filter.class
 )
-public class BlockTokenRequestsFilter extends BaseFilter {
+public class BlockSiteInitializerRequestsFilter extends BaseFilter {
 
     @Override
     protected Log getLog() {
@@ -38,15 +38,17 @@ public class BlockTokenRequestsFilter extends BaseFilter {
             throws Exception {
 
         //httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "xXx Access to this resource is forbidden");
-        //httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad request; I'm grumpy");
-        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access to resource");
+        httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad request; I'm grumpy");
+        //httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access to resource");
 
+        _log.error(httpServletRequest.getRequestURI() + " blocked!");
+        
         processFilter(
-                BlockTokenRequestsFilter.class.getName(), httpServletRequest,
+                BlockSiteInitializerRequestsFilter.class.getName(), httpServletRequest,
                 httpServletResponse, filterChain);
     }
 
     private static final Log _log = LogFactoryUtil.getLog(
-            BlockTokenRequestsFilter.class);
+            BlockSiteInitializerRequestsFilter.class);
 
 }
