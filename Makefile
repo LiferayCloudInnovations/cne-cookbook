@@ -73,7 +73,7 @@ deploy-cx: check-recipe-vars switch-context ## Deploy Client extensions to clust
 deploy-dxp: check-recipe-vars deploy-workspace start-cluster switch-context license
 	@./resources/scripts/deploy_dxp.sh ${RECIPE}
 
-deploy-workspace: check-recipe-vars clean-local-mount ## Deploy Liferay modules to local mount
+deploy-workspace: check-recipe-vars clean-local-mount mkdir-local-mount ## Deploy Liferay modules to local mount
 	@(stat "${PWD}/recipes/${RECIPE}/workspace" && cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew -Pliferay.workspace.home.dir="${PWD}/${LOCAL_MOUNT}" deploy -x test -x check) || true
 
 help:
