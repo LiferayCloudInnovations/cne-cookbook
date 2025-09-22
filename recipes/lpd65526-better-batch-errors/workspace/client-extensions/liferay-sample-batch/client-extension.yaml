@@ -12,3 +12,8 @@ liferay-sample-batch-oauth-application-headless-server:
     scopes:
         -   c_foo
     type: oAuthApplicationHeadlessServer
+#    scopes:
+#        -   Liferay.Headless.Admin.Workflow.everything
+#        -   Liferay.Headless.Batch.Engine.everything
+#        -   Liferay.Object.Admin.REST.everything
+#    type: oAuthApplicationHeadlessServer

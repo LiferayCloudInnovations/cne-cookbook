@@ -1,3 +1,2 @@
-FROM gamerson/batch:9.0.61-snapshot-20250919073836
-ENV LIFERAY_BATCH_CURL_OPTIONS="-vv"
+FROM gamerson/batch:9.0.61-snapshot-20250922061902
 COPY --chown=liferay:liferay /site-initializer /opt/liferay/site-initializer
