@@ -3,4 +3,4 @@ ingredients:
   - license-values.yaml
   - mountlocal-values.yaml
   - postgresql-values.yaml
-  #- osgimodules-values.yaml
+  - osgimodules-values.yaml
