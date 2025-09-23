@@ -1,5 +1,6 @@
 image:
-  tag: 2025.q1.17-lts
+  repository: gamerson/liferayportal-snapshot
+  tag: test-lpd-63828-2-20250923140233
 portalProperties: |
   admin.email.from.address=test@main.dxp.localtest.me
   admin.email.from.name=Test Test
