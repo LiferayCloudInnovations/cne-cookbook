@@ -28,8 +28,8 @@ lpd65526-better-batch-errors:
 	export RECIPE="lpd65526-better-batch-errors"
 	$(MAKE) recipe
 
-saas-agent-debouncing: ## SaaS Agent Debouncing
-	export RECIPE="saas-agent-debouncing"
+override-agent-test:
+	export RECIPE="override-agent-test"
 	$(MAKE) recipe
 
 saas-bad-configmap: ## SaaS Bad Configmap
@@ -68,7 +68,7 @@ create-cluster: mkdir-local-mount ## Start k3d cluster
 deploy: deploy-workspace deploy-dxp deploy-cx
 
 deploy-cx: check-recipe-vars switch-context ## Deploy Client extensions to cluster
-	@cd "${PWD}/recipes/${RECIPE}/workspace" && (./gradlew helmDeploy -x test -x check || true)
+	@(stat "${PWD}/recipes/${RECIPE}/workspace/client-extensions" && cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew helmDeploy -x test -x check) || true
 
 deploy-dxp: check-recipe-vars deploy-workspace start-cluster switch-context license
 	@./resources/scripts/deploy_dxp.sh ${RECIPE}

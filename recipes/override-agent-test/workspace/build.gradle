@@ -1,12 +1,11 @@
 import de.undercouch.gradle.tasks.download.Download
 
-task deployOverrideAgent(type: Download) {
-    src 'liferay-dxp-agent-1.0.3.jar'
-    dest new File(gradle.liferayWorkspace.homeDir, '/osgi/modules/liferay-dxp-agent-1.0.3.jar')
-    overwrite false
+task copyOverrideAgent(type: Copy) {
+    from new File(projectDir, 'liferay-dxp-agent-jakarta-1.0.3.jar')
+    into new File(gradle.liferayWorkspace.homeDir, '/osgi/modules/')
 }
 
 deploy {
-    dependsOn deployOverrideAgent
+    dependsOn copyOverrideAgent
 }
 
