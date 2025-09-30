@@ -7,6 +7,6 @@ task downloadPatch(type: Download) {
 }
 
 deploy {
-    dependsOn downloadPatch
+//    dependsOn downloadPatch
 }
 

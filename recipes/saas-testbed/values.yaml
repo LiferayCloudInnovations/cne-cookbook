@@ -26,9 +26,6 @@ configmap:
       addDefaultAdminUser=B"true"
 customVolumeMounts:
    x-saas-testbed:
-     - mountPath: /etc/liferay/mount/patching
-       name: mount-local
-       subPath: patching
      - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~able.dxp.localtest.me.config
        name: liferay-configmap
        subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-able.dxp.localtest.me.config
@@ -50,9 +47,9 @@ replicaCount: 2
 resources:
   limits:
     cpu: 8000m
-    memory: 12Gi
+    memory: 16Gi
   requests:
     cpu: 4000m
-    memory: 8Gi
+    memory: 12Gi
 securityContext:
   readOnlyRootFilesystem: false
