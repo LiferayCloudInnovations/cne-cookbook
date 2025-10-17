@@ -1,4 +1,4 @@
   cronSchedule: "*/15 * * * *"
   kind: CronJob
   mountInitConfig: true
-  virtualInstanceId: main.dxp.localtest.me
+  virtualInstanceId: sample.dxp.localtest.me

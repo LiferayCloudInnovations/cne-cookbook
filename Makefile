@@ -58,6 +58,9 @@ clean-workspace: check-recipe-vars ## Clean recipe workspace
 	@cd "${PWD}/recipes/${RECIPE}/workspace" && ./gradlew clean
 	@rm -rf "${PWD}/recipes/${RECIPE}/workspace/bundles"
 
+copy-password:
+	@kubectl -n liferay-system get secret liferay-default -o jsonpath="{.data.LIFERAY_DEFAULT_PERIOD_ADMIN_PERIOD_PASSWORD}" | base64 -d | wl-copy
+
 create-cluster: mkdir-local-mount ## Start k3d cluster
 	@k3d cluster list "${CLUSTER_NAME}" ||
 		k3d cluster create "${CLUSTER_NAME}" \

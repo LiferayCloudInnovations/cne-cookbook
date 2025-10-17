@@ -1,0 +1,21 @@
+configmap:
+  data:
+    com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-sample.dxp.localtest.me.config:
+      |
+      active=B"true"
+      maxUsers=I"0"
+      mx="sample.dxp.localtest.me"
+      siteInitializerKey="blank-site-initializer"
+      virtualHostname="sample.dxp.localtest.me"
+      adminScreenName="sample"
+      adminEmailAddress="sample@able.dxp.localtest.me"
+      adminFirstName="sample"
+      adminMiddleName="sample"
+      adminLastName="sample"
+      addDefaultAdminUser=B"true"
+customVolumeMounts:
+  x-able-virtualinstance:
+    - mountPath: /opt/liferay/osgi/configs/com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration~sample.dxp.localtest.me.config
+      name: liferay-configmap
+      subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-sample.dxp.localtest.me.config
+

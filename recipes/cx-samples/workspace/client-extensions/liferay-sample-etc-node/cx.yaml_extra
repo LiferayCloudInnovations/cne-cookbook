@@ -1,5 +1,5 @@
   kind: Deployment
-  virtualInstanceId: main.dxp.localtest.me
+  virtualInstanceId: sample.dxp.localtest.me
 ingress:
     enabled: true
 livenessProbe:

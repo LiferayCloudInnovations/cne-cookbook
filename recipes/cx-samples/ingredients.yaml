@@ -2,3 +2,4 @@ ingredients:
   - ingress-values.yaml
   - license-values.yaml
   - postgresql-values.yaml
+  - sample-virtualinstance.yaml
