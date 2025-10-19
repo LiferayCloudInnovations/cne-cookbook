@@ -8,7 +8,7 @@ configmap:
       siteInitializerKey="blank-site-initializer"
       virtualHostname="sample.dxp.localtest.me"
       adminScreenName="sample"
-      adminEmailAddress="sample@able.dxp.localtest.me"
+      adminEmailAddress="sample@sample.dxp.localtest.me"
       adminFirstName="sample"
       adminMiddleName="sample"
       adminLastName="sample"
