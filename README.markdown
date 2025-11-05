@@ -158,4 +158,4 @@ Ensure you have the following tools installed on your system:
   contain the fragment of values.yaml that are needed when deploying the Liferay
   helm chart for client extensions.
 - See examples in the
-  `cx-samples/workspace/client-extensions/**/cx.values_extra`
+  `cx-samples/workspace/client-extensions/**/cx.yaml_extra`
