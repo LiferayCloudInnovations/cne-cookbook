@@ -40,6 +40,10 @@ saas-testbed: ## SaaS Testbed
 	export RECIPE="saas-testbed"
 	$(MAKE) recipe
 
+multiple-object-entry-managers-with-same-name:
+	export RECIPE="multiple-object-entry-managers-with-same-name"
+	$(MAKE) recipe
+
 ### TARGETS ###
 
 check-recipe-vars: ## Check if recipe variables are set, throw error otherwise
