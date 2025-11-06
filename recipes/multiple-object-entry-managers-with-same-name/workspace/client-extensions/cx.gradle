@@ -88,7 +88,7 @@ subprojects {
 				'--set',
 				"image.tag=${buildTimestamp}",
 				'--set',
-				'clientExtensionConfig.virtualInstanceId=able.dxp.localtest.me',
+				'clientExtensionConfig.virtualInstanceId=baker.dxp.localtest.me',
 				rootProject.file('../../../resources/charts/client-extension')
 			)
 			ignoreExitValue = true
