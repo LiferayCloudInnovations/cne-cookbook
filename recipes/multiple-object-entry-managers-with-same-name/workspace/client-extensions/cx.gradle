@@ -1,0 +1,113 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+
+ext {
+	buildTimestamp = new Date().format("yyyyMMddHHmmss")
+}
+
+subprojects {
+	afterEvaluate {
+		buildDockerImage {
+			images.add("${project.name}:${buildTimestamp}")
+		}
+
+		task tagDockerImage(type: DockerTagImage) {
+			description = "Tags the Docker image for the client extension."
+			imageId = "${project.name}"
+			tag = "$buildTimestamp"
+			repository = "localhost:5000/${project.name}"
+			dependsOn tasks["buildDockerImage"]
+		}
+
+		task pushDockerImage(type: DockerPushImage) {
+			description = "Pushes the Docker image to the registry."
+			images = ["localhost:5000/${project.name}:$buildTimestamp"]
+			dependsOn tasks["tagDockerImage"]
+		}
+
+        def generatedFileName = "cx-values.yaml"
+        def generatedFilePath = layout.buildDirectory.file("liferay-client-extension-build/${generatedFileName}").get().asFile
+
+        tasks.named('createClientExtensionConfig') {
+            outputs.file(generatedFilePath)
+            doLast {
+                generatedFilePath.getParentFile().mkdirs()
+                def clientExtensionConfigContent = layout.buildDirectory.file("liferay-client-extension-build/${project.name}.client-extension-config.json").get().asFile.text.replaceAll(/[\r\n]+/, "").trim()
+                def valuesYamlContent = """clientExtensionConfig:
+  configJsons:
+    - |
+      ${clientExtensionConfigContent}
+  mainDomain: "${project.name}.localtest.me"
+"""
+
+		        generatedFilePath.write(valuesYamlContent)
+            }
+        }
+
+
+		task helmDeploy(dependsOn: ["helmDeployAble", "helmDeployBaker"]) {
+		}
+
+		task helmDeployAble(type: Exec) {
+			description = "Deploys the client extension using Helm."
+			commandLine(
+				'helm',
+				'upgrade',
+				'--install',
+				'--namespace',
+				'liferay-system',
+				project.name + "-cx-able",
+				'-f',
+				project.layout.buildDirectory.file("./liferay-client-extension-build/cx-values.yaml").get(),
+				'--set',
+				"image.repository=registry:5000/${project.name}",
+				'--set',
+				"image.tag=${buildTimestamp}",
+				'--set',
+				'clientExtensionConfig.virtualInstanceId=able.dxp.localtest.me',
+				rootProject.file('../../../resources/charts/client-extension')
+			)
+			ignoreExitValue = true
+
+			dependsOn tasks["pushDockerImage"]
+		}
+
+		task helmDeployBaker(type: Exec) {
+			description = "Deploys the client extension using Helm."
+			commandLine(
+				'helm',
+				'upgrade',
+				'--install',
+				'--namespace',
+				'liferay-system',
+				project.name + "-cx-baker",
+				'-f',
+				project.layout.buildDirectory.file("./liferay-client-extension-build/cx-values.yaml").get(),
+				'--set',
+				"image.repository=registry:5000/${project.name}",
+				'--set',
+				"image.tag=${buildTimestamp}",
+				'--set',
+				'clientExtensionConfig.virtualInstanceId=baker.dxp.localtest.me',
+				rootProject.file('../../../resources/charts/client-extension')
+			)
+			ignoreExitValue = true
+
+			dependsOn tasks["pushDockerImage"]
+		}
+
+		task helmUndeploy(type: Exec) {
+			description = "Undeployed the client extension using Helm."
+			commandLine(
+				'helm',
+				'uninstall',
+				'--namespace',
+				'liferay-system',
+				'--ignore-not-found',
+				project.name + "-cx",
+			)
+			ignoreExitValue = true
+		}
+
+	}
+}

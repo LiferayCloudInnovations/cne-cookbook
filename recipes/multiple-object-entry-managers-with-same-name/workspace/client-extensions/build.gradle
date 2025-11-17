@@ -1,0 +1,2 @@
+//apply from : "${rootDir}/../../../resources/build/cx.gradle"
+apply from : "${rootDir}/client-extensions/cx.gradle"
