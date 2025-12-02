@@ -43,9 +43,9 @@ portalProperties: |
   company.default.web.id=main.dxp.localtest.me
   login.dialog.disabled=true
   passwords.default.policy.change.required=false
-  virtual.hosts.strict.access=false
   web.server.display.node=true
   web.server.protocol=http
+#  virtual.hosts.strict.access=false
 replicaCount: 2
 resources:
   limits:
@@ -56,3 +56,5 @@ resources:
     memory: 12Gi
 securityContext:
   readOnlyRootFilesystem: false
+livenessProbe:
+    timeoutSeconds: 600

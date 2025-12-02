@@ -1,6 +1,9 @@
 ingredients:
   - elasticsearch-values.yaml
   - ingress-values.yaml
+  - jpda-values.yaml
   - license-values.yaml
   - logging-values.yaml
+  - mountlocal-values.yaml
+  - patching-values.yaml
   - postgresql-values.yaml

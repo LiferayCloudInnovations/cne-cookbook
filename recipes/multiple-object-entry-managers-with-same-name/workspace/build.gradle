@@ -1,12 +1,12 @@
 import de.undercouch.gradle.tasks.download.Download
 
 task downloadPatch(type: Download) {
-    src 'https://releases-cdn.liferay.com/dxp/hotfix/2025.q1.8-lts/liferay-dxp-2025.q1.8-lts-hotfix-210.zip'
-    dest new File(gradle.liferayWorkspace.homeDir, '/patching/liferay-dxp-2025.q1.8-lts-hotfix-210.zip')
+    src 'https://releases-cdn.liferay.com/dxp/hotfix/2025.q2.4/liferay-dxp-2025.q2.4-hotfix-18.zip'
+    dest new File(gradle.liferayWorkspace.homeDir, '/patching/liferay-dxp-2025.q2.4-hotfix-18.zip')
     overwrite false
 }
 
 deploy {
-//    dependsOn downloadPatch
+    dependsOn downloadPatch
 }
 
