@@ -1,0 +1,5 @@
+customEnv:
+  x-virtualhostsignorehosts-enabled:
+    - name: LIFERAY_VIRTUAL_PERIOD_HOSTS_PERIOD_IGNORE_PERIOD_HOSTS
+      value: "127.0.0.1,localhost,${env:POD_IP}"
+

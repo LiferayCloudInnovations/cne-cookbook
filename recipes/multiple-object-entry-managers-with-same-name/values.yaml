@@ -33,7 +33,7 @@ customVolumeMounts:
        name: liferay-configmap
        subPath: com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration-baker.dxp.localtest.me.config
 image:
-  tag: 2025.q1.17-lts
+  tag: 7.4.13.nightly-d9.0.90-20251202120550
 portalProperties: |
   include-and-override=portal-developer.properties
   company.default.virtual.host.mail.domain=main.dxp.localtest.me
