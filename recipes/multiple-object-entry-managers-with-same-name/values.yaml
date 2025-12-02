@@ -57,4 +57,4 @@ resources:
 securityContext:
   readOnlyRootFilesystem: false
 livenessProbe:
-    timeoutSeconds: 600
+    timeoutSeconds: 6000
