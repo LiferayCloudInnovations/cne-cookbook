@@ -20,6 +20,7 @@ configmap:
               <Logger level="INFO" name="com.liferay.portal.bootstrap.log" />
               <Logger level="INFO" name="com.liferay.portal.cluster" />
               <Logger level="WARN" name="com.liferay.portal.configuration.ConfigurationImpl" />
+              <Logger level="DEBUG" name="com.liferay.portal.configuration.cluster.internal" />
               <Logger level="DEBUG" name="com.liferay.portal.convert" />
               <Logger level="INFO" name="com.liferay.portal.dao.db" />
               <Logger level="INFO" name="com.liferay.portal.dao.db.BaseDB" />
@@ -187,6 +188,7 @@ configmap:
               <Logger level="ERROR" name="net.sf.hibernate" />
               <Logger level="WARN" name="org.apache.aries.jax.rs.whiteboard.activator.CxfJaxrsBundleActivator" />
               <Logger level="ERROR" name="org.apache.chemistry.opencmis.client.bindings.spi.atompub.HttpUtils" />
+              <Logger level="DEBUG" name="org.apache.felix.cm.impl" />
               <Logger level="ERROR" name="org.apache.pdfbox" />
               <Logger level="ERROR" name="org.apache.velocity" />
               <Logger level="ERROR" name="org.apache.xbean" />

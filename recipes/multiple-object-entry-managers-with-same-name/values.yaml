@@ -53,3 +53,5 @@ resources:
     memory: 12Gi
 securityContext:
   readOnlyRootFilesystem: false
+livenessProbe:
+    timeoutSeconds: 6000
