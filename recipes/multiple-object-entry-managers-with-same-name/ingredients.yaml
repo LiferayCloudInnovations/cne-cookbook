@@ -7,3 +7,5 @@ ingredients:
   - mountlocal-values.yaml
   - patching-values.yaml
   - postgresql-values.yaml
+  - jpda-values.yaml
+  - virtualhostsignorehosts-values.yaml
