@@ -8,6 +8,10 @@ LOCAL_MOUNT := tmp/mnt/local
 
 ### RECIPES ###
 
+cluster-session-replication:
+	export RECIPE="cluster-session-replication"
+	$(MAKE) recipe
+
 cx-direct-deploy-test: ## Test direct deploy cx
 	export RECIPE="cx-direct-deploy-test"
 	$(MAKE) recipe

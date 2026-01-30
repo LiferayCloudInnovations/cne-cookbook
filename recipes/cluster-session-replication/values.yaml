@@ -1,0 +1,19 @@
+image:
+  tag: 2025.q1.20-lts
+portalProperties: |
+  company.default.virtual.host.mail.domain=main.dxp.localtest.me
+  company.default.virtual.host.name=main.dxp.localtest.me
+  company.default.web.id=main.dxp.localtest.me
+  passwords.default.policy.change.required=false
+  web.server.display.node=true
+  web.server.protocol=http
+replicaCount: 1
+resources:
+  limits:
+    cpu: 8000m
+    memory: 16Gi
+  requests:
+    cpu: 4000m
+    memory: 12Gi
+securityContext:
+  readOnlyRootFilesystem: false

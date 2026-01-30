@@ -1,0 +1,6 @@
+ingredients:
+  - elasticsearch-values.yaml
+  - ingress-values.yaml
+  - jpda-values.yaml
+  - license-values.yaml
+  - postgresql-values.yaml
