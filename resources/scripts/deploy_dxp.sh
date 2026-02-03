@@ -12,8 +12,11 @@ fi
 
 values_args=$(printf " %s" "${values_files[@]}")
 
+# default liferay-default chart
+#oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
+
 helm upgrade -i liferay \
-		oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default \
+		"${PWD}/resources/charts/liferay-default/" \
        -f "${PWD}/recipes/${RECIPE}/values.yaml" \
 		$values_args \
 		--create-namespace \

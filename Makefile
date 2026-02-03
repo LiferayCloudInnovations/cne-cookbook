@@ -73,6 +73,7 @@ create-cluster: mkdir-local-mount ## Start k3d cluster
 	@k3d cluster list "${CLUSTER_NAME}" ||
 		k3d cluster create "${CLUSTER_NAME}" \
 			--port 80:80@loadbalancer \
+			--port 8000:30000@loadbalancer \
 			--registry-create registry:5000 \
 			--volume "${PWD}/${LOCAL_MOUNT}:/mnt/local@all:*"
 

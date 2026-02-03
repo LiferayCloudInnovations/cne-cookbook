@@ -2,4 +2,27 @@ customEnv:
   x-jpda-enabled:
     - name: LIFERAY_JPDA_ENABLED
       value: "true"
+    - name: JPDA_ADDRESS
+      value: "*:8000"
+    - name: JPDA_SUSPEND
+      value: "y"
+customObjects:
+  x-jpda-enabled:
+    - |
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: {{ include "liferay.name" . }}-jpda
+      spec:
+        selector:
+          app: {{ include "liferay.name" . }}
+          app.kubernetes.io/instance: liferay
+          app.kubernetes.io/name: {{ include "liferay.name" . }}
+        ports:
+          - protocol: TCP
+            port: 8000
+            targetPort: 8000
+            nodePort: 30000
+        publishNotReadyAddresses: true 
+        type: NodePort
 
