@@ -1,0 +1,24 @@
+customInitContainers:
+    x-tomcat-cluster-debug-logging:
+        -   containerTemplate: |
+                -   command:
+                        -   bash
+                        -   -c
+                        -   |
+                                if [ ! -f /temp/tomcat/conf/logging.properties]
+                                then
+                                    mkdir -p /temp/tomcat/conf
+
+                                    cp -v /opt/liferay/tomcat/conf/logging.properties /temp/tomcat/conf/logging.properties
+                                fi
+
+                                echo -e "\norg.apache.catalina.tribes.MESSAGES=FINE" >> /temp/tomcat/conf/logging.properties
+                                echo -e "\norg.apache.catalina.tribes.membership.cloud.level=SEVERE" >> /temp/tomcat/conf/logging.properties
+
+                                cat /temp/tomcat/conf/logging.properties
+                    image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}
+                    imagePullPolicy: {{ .image.pullPolicy }}
+                    name: liferay-prepopulate-data
+                    volumeMounts:
+                        -   mountPath: /temp
+                            name: liferay-persistent-volume

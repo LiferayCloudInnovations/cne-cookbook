@@ -3,4 +3,5 @@ ingredients:
   - ingress-values.yaml
   - jpda-values.yaml
   - license-values.yaml
+  - logging-values.yaml
   - postgresql-values.yaml
