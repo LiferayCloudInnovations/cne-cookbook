@@ -1,5 +1,3 @@
 ingredients:
-  - ingress-values.yaml
-  - license-values.yaml
-  - mountlocal-values.yaml
+  - common-values.yaml
   - postgresql-values.yaml

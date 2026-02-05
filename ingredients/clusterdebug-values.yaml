@@ -14,6 +14,8 @@ customInitContainers:
 
                                 echo -e "\norg.apache.catalina.tribes.MESSAGES=FINE" >> /temp/tomcat/conf/logging.properties
                                 echo -e "\norg.apache.catalina.tribes.membership.cloud.level=SEVERE" >> /temp/tomcat/conf/logging.properties
+                                echo -e "\norg.apache.catalina.ha.session.handlers=java.util.logging.ConsoleHandler" >> /temp/tomcat/conf/logging.properties
+                                echo -e "\norg.apache.catalina.ha.session.level=INFO" >> /temp/tomcat/conf/logging.properties
 
                                 cat /temp/tomcat/conf/logging.properties
                     image: {{ printf "%s:%s" .image.repository (.image.tag | toString) }}

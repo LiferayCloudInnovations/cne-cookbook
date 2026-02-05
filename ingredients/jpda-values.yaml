@@ -5,7 +5,7 @@ customEnv:
     - name: JPDA_ADDRESS
       value: "*:8000"
     - name: JPDA_SUSPEND
-      value: "y"
+      value: "n"
 customObjects:
   x-jpda-enabled:
     - |

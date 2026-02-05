@@ -54,10 +54,14 @@ configmap:
               <Logger level="WARN" name="com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist" />
               <Logger level="ERROR" name="com.liferay.portal.kernel.bean.PortalBeanLocatorUtil" />
               <Logger level="DEBUG" name="com.liferay.portal.k8s" />
-              <Logger level="WARN" name="com.liferay.portal.kernel.cluster" />
+              <Logger level="INFO" name="com.liferay.portal.kernel.cluster" />
+              <Logger level="INFO" name="com.liferay.portal.kernel.scheduler.multiple" />
+              <Logger level="INFO" name="com.liferay.portal.cache.multiple" />
+              <Logger level="INFO" name="com.liferay.portal.scheduler.multiple" />
               <Logger level="WARN" name="com.liferay.portal.kernel.dao.orm.QueryUtil" />
               <Logger level="INFO" name="com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil" />
               <Logger level="INFO" name="com.liferay.portal.kernel.deploy" />
+              <Logger level="INFO" name="com.liferay.portal.kernel.exception.NoSuchClusterGroupException" />
               <Logger level="ERROR" name="com.liferay.portal.kernel.lar" />
               <Logger level="INFO" name="com.liferay.portal.kernel.messaging.config.DefaultMessagingConfigurator" />
               <Logger level="ERROR" name="com.liferay.portal.kernel.model.Image" />
@@ -218,8 +222,40 @@ configmap:
               </Root>
           </Loggers>
       </Configuration>
+customVolumes:
+  x-mountlocal:
+    - hostPath:
+        path: /mnt/local
+      name: mount-local
+customEnv:
+  x-license:
+    - name: LIFERAY_DISABLE_TRIAL_LICENSE
+      value: "true"
 customVolumeMounts:
-  x-saas-logging:
+  x-license:
+    - mountPath: /etc/liferay/mount/files/deploy/license.xml
+      name: liferay-configmap
+      subPath: license.xml
+  x-mountlocal:
+    - mountPath: /mnt/local
+      name: mount-local
+  x-portal-log4j-ext:
     - mountPath: /opt/liferay/tomcat/webapps/ROOT/WEB-INF/classes/META-INF/portal-log4j-ext.xml
       name: liferay-configmap
       subPath: portal-log4j-ext.xml
+ingress:
+  enabled: true
+  rules:
+  - host: "*.dxp.localtest.me"
+    http:
+      paths:
+      - backend:
+          service:
+            name: liferay-default
+            port:
+              name: http
+        path: /
+        pathType: ImplementationSpecific
+service:
+  annotations:
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
