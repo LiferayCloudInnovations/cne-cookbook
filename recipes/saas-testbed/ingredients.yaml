@@ -1,5 +1,4 @@
 ingredients:
+  - common-values.yaml
   - elasticsearch-values.yaml
-  - ingress-values.yaml
-  - license-values.yaml
   - postgresql-values.yaml

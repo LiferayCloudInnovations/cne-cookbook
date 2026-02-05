@@ -1,9 +1,6 @@
 ingredients:
   - able-virtualinstance-values.yaml
+  - common-values.yaml
   - elasticsearch-values.yaml
-  - ingress-values.yaml
   - jpda-values.yaml
-  - license-values.yaml
-  - logging-values.yaml
-  - mountlocal-values.yaml
   - postgresql-values.yaml
